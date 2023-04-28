@@ -26,6 +26,8 @@ namespace RPGMods.Utils
             WorldDynamicsSystem.SaveFactionStats();
             WorldDynamicsSystem.SaveIgnoredMobs();
 
+            Plugin.saveLocalization();
+
             Plugin.Logger.LogInfo("All database saved to JSON file.");
         }
 

@@ -146,6 +146,22 @@ namespace RPGMods
         private static ConfigEntry<bool> EnableWorldDynamics;
         private static ConfigEntry<bool> WDGrowOnKill;
 
+        public static Dictionary<string, string> localizationData = new Dictionary<string, string>();
+        public static string getTranslation(string phrase) {
+            string returnVal = ">>> Error with getting translation! <<<";
+            if (localizationData.TryGetValue(phrase, out string temp)) {
+                returnVal = temp;
+            }
+            else {
+                setTranslation(phrase, phrase);
+                returnVal = phrase;
+            }
+            return returnVal;
+        }
+        public static void setTranslation(string key, string phrase) {
+            localizationData.Remove(key);
+            localizationData.Add(key, phrase);
+        }
 
         public static bool isInitialized = false;
 
@@ -157,13 +173,13 @@ namespace RPGMods
             {
                 if (_serverWorld != null) return _serverWorld;
 
-                _serverWorld = GetWorld("Server")
-                    ?? throw new System.Exception(Database.getTranslation("There is no Server world (yet). Did you install a server mod on the client?"));
+                _serverWorld = GetWorld(Plugin.getTranslation("Server"))
+                    ?? throw new System.Exception(Plugin.getTranslation(Plugin.getTranslation("There is no Server world (yet). Did you install a server mod on the client?")));
                 return _serverWorld;
             }
         }
 
-        public static bool IsServer => Application.productName == "VRisingServer";
+        public static bool IsServer => Application.productName == Plugin.getTranslation("VRisingServer");
 
         private static World GetWorld(string name)
         {
@@ -178,176 +194,180 @@ namespace RPGMods
             return null;
         }
 
-        public void InitConfig()
-        {
-            Prefix = Config.Bind("Config", "Prefix", ".", "The prefix used for chat commands.");
-            DelayedCommands = Config.Bind("Config", "Command Delay", 5f, "The number of seconds user need to wait out before sending another command.\n" +
-                "Admin will always bypass this.");
-            DisabledCommands = Config.Bind("Config", "Disabled Commands", "", "Enter command names to disable them, abbreviation are included automatically. Seperated by commas.\n" +
-                "Ex.: save,godmode");
-            WaypointLimit = Config.Bind("Config", "Waypoint Limit", 3, "Set a waypoint limit per user.");
+        public void InitConfig() {
+            string config = Plugin.getTranslation(Plugin.getTranslation("Config"));
+            Prefix = Config.Bind(config, Plugin.getTranslation("Prefix"), ".", Plugin.getTranslation("The prefix used for chat commands."));
+            DelayedCommands = Config.Bind(config, Plugin.getTranslation("Command Delay"), 5f, Plugin.getTranslation("The number of seconds user need to wait out before sending another command.\n") +
+                Plugin.getTranslation("Admin will always bypass this."));
+            DisabledCommands = Config.Bind(config, Plugin.getTranslation("Disabled Commands"), "Plugin.getTranslation(", ")Enter command names to disable them, abbreviation are included automatically. Seperated by commas.\n" +
+                Plugin.getTranslation("Ex.: save,godmode"));
+            WaypointLimit = Config.Bind(config, Plugin.getTranslation("Waypoint Limit"), 3, Plugin.getTranslation("Set a waypoint limit per user."));
 
-            EnableVIPSystem = Config.Bind("VIP", "Enable VIP System", false, "Enable the VIP System.");
-            EnableVIPWhitelist = Config.Bind("VIP", "Enable VIP Whitelist", false, "Enable the VIP user to ignore server capacity limit.");
-            VIP_Permission = Config.Bind("VIP", "Minimum VIP Permission", 10, "The minimum permission level required for the user to be considered as VIP.");
+            EnableVIPSystem = Config.Bind(Plugin.getTranslation("VIP"), Plugin.getTranslation("Enable VIP System"), false, Plugin.getTranslation("Enable the VIP System."));
+            EnableVIPWhitelist = Config.Bind(Plugin.getTranslation("VIP"), Plugin.getTranslation("Enable VIP Whitelist"), false, Plugin.getTranslation("Enable the VIP user to ignore server capacity limit."));
+            VIP_Permission = Config.Bind(Plugin.getTranslation("VIP"), Plugin.getTranslation("Minimum VIP Permission"), 10, Plugin.getTranslation("The minimum permission level required for the user to be considered as VIP."));
 
-            VIP_InCombat_DurabilityLoss = Config.Bind("VIP.InCombat", "Durability Loss Multiplier", 0.5, "Multiply durability loss when user is in combat. -1.0 to disable.\n" +
-                "Does not affect durability loss on death.");
-            VIP_InCombat_GarlicResistance = Config.Bind("VIP.InCombat", "Garlic Resistance Multiplier", -1.0, "Multiply garlic resistance when user is in combat. -1.0 to disable.");
-            VIP_InCombat_SilverResistance = Config.Bind("VIP.InCombat", "Silver Resistance Multiplier", -1.0, "Multiply silver resistance when user is in combat. -1.0 to disable.");
-            VIP_InCombat_MoveSpeed = Config.Bind("VIP.InCombat", "Move Speed Multiplier", -1.0, "Multiply move speed when user is in combat. -1.0 to disable.");
-            VIP_InCombat_ResYield = Config.Bind("VIP.InCombat", "Resource Yield Multiplier", 2.0, "Multiply resource yield (not item drop) when user is in combat. -1.0 to disable.");
+            VIP_InCombat_DurabilityLoss = Config.Bind(Plugin.getTranslation("VIP.InCombat"), Plugin.getTranslation("Durability Loss Multiplier"), 0.5, Plugin.getTranslation("Multiply durability loss when user is in combat. -1.0 to disable.\n") +
+                Plugin.getTranslation("Does not affect durability loss on death."));
+            VIP_InCombat_GarlicResistance = Config.Bind(Plugin.getTranslation("VIP.InCombat"), Plugin.getTranslation("Garlic Resistance Multiplier"), -1.0, Plugin.getTranslation("Multiply garlic resistance when user is in combat. -1.0 to disable."));
+            VIP_InCombat_SilverResistance = Config.Bind(Plugin.getTranslation("VIP.InCombat"), Plugin.getTranslation("Silver Resistance Multiplier"), -1.0, Plugin.getTranslation("Multiply silver resistance when user is in combat. -1.0 to disable."));
+            VIP_InCombat_MoveSpeed = Config.Bind(Plugin.getTranslation("VIP.InCombat"), Plugin.getTranslation("Move Speed Multiplier"), -1.0, Plugin.getTranslation("Multiply move speed when user is in combat. -1.0 to disable."));
+            VIP_InCombat_ResYield = Config.Bind(Plugin.getTranslation("VIP.InCombat"), Plugin.getTranslation("Resource Yield Multiplier"), 2.0, Plugin.getTranslation("Multiply resource yield (not item drop) when user is in combat. -1.0 to disable."));
 
-            VIP_OutCombat_DurabilityLoss = Config.Bind("VIP.OutCombat", "Durability Loss Multiplier", 0.5, "Multiply durability loss when user is out of combat. -1.0 to disable.\n" +
-                "Does not affect durability loss on death.");
-            VIP_OutCombat_GarlicResistance = Config.Bind("VIP.OutCombat", "Garlic Resistance Multiplier", 2.0, "Multiply garlic resistance when user is out of combat. -1.0 to disable.");
-            VIP_OutCombat_SilverResistance = Config.Bind("VIP.OutCombat", "Silver Resistance Multiplier", 2.0, "Multiply silver resistance when user is out of combat. -1.0 to disable.");
-            VIP_OutCombat_MoveSpeed = Config.Bind("VIP.OutCombat", "Move Speed Multiplier", 1.25, "Multiply move speed when user is out of combat. -1.0 to disable.");
-            VIP_OutCombat_ResYield = Config.Bind("VIP.OutCombat", "Resource Yield Multiplier", 2.0, "Multiply resource yield (not item drop) when user is out of combat. -1.0 to disable.");
+            VIP_OutCombat_DurabilityLoss = Config.Bind(Plugin.getTranslation("VIP.OutCombat"), Plugin.getTranslation("Durability Loss Multiplier"), 0.5, Plugin.getTranslation("Multiply durability loss when user is out of combat. -1.0 to disable.\n") +
+                Plugin.getTranslation("Does not affect durability loss on death."));
+            VIP_OutCombat_GarlicResistance = Config.Bind(Plugin.getTranslation("VIP.OutCombat"), Plugin.getTranslation("Garlic Resistance Multiplier"), 2.0, Plugin.getTranslation("Multiply garlic resistance when user is out of combat. -1.0 to disable."));
+            VIP_OutCombat_SilverResistance = Config.Bind(Plugin.getTranslation("VIP.OutCombat"), Plugin.getTranslation("Silver Resistance Multiplier"), 2.0, Plugin.getTranslation("Multiply silver resistance when user is out of combat. -1.0 to disable."));
+            VIP_OutCombat_MoveSpeed = Config.Bind(Plugin.getTranslation("VIP.OutCombat"), Plugin.getTranslation("Move Speed Multiplier"), 1.25, Plugin.getTranslation("Multiply move speed when user is out of combat. -1.0 to disable."));
+            VIP_OutCombat_ResYield = Config.Bind(Plugin.getTranslation("VIP.OutCombat"), Plugin.getTranslation("Resource Yield Multiplier"), 2.0, Plugin.getTranslation("Multiply resource yield (not item drop) when user is out of combat. -1.0 to disable."));
 
-            AnnouncePvPKills = Config.Bind("PvP", "Announce PvP Kills", true, "Make a server wide announcement for all PvP kills.");
-            EnableHonorSystem = Config.Bind("PvP", "Enable Honor System", false, "Enable the honor system.");
-            EnableHonorTitle = Config.Bind("PvP", "Enable Honor Title", true, "When enabled, the system will append the title to their name.\nHonor system will leave the player name untouched if disabled.");
-            MaxHonorGainPerSpan = Config.Bind("PvP", "Max Honor Gain/Hour", 250, "Maximum amount of honor points the player can gain per hour.");
-            EnableHonorBenefit = Config.Bind("PvP", "Enable Honor Benefit & Penalties", true, "If disabled, the hostility state and custom siege system will be disabled.\n" +
-                "All other bonus is also not applied.");
-            HonorSiegeDuration = Config.Bind("PvP", "Custom Siege Duration", 180, "In minutes. Player will automatically exit siege mode after this many minutes has passed.\n" +
-                "Siege mode cannot be exited while duration has not passed.");
-            EnableHostileGlow = Config.Bind("PvP", "Enable Hostile Glow", true, "When set to true, hostile players will glow red.");
-            UseProximityGlow = Config.Bind("PvP", "Enable Proximity Hostile Glow", true, "If enabled, hostile players will only glow when they are close to other online player.\n" +
-                "If disabled, hostile players will always glow red.");
-            EnablePvPLadder = Config.Bind("PvP", "Enable PvP Ladder", true, "Enables the PvP Ladder in the PvP command.");
-            PvPLadderLength = Config.Bind("PvP", "Ladder Length", 10, "How many players should be displayed in the PvP Ladders.");
-            HonorSortLadder = Config.Bind("PvP", "Sort PvP Ladder by Honor", true, "This will automatically be false if honor system is not enabled.");
-            EnablePvPToggle = Config.Bind("PvP", "Enable PvP Toggle", false, "Enable/disable the pvp toggle feature in the pvp command.");
+            AnnouncePvPKills = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Announce PvP Kills"), true, Plugin.getTranslation("Make a server wide announcement for all PvP kills."));
+            EnableHonorSystem = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Enable Honor System"), false, Plugin.getTranslation("Enable the honor system."));
+            EnableHonorTitle = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Enable Honor Title"), true, Plugin.getTranslation("When enabled, the system will append the title to their name.\nHonor system will leave the player name untouched if disabled."));
+            MaxHonorGainPerSpan = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Max Honor Gain/Hour"), 250, Plugin.getTranslation("Maximum amount of honor points the player can gain per hour."));
+            EnableHonorBenefit = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Enable Honor Benefit & Penalties"), true, Plugin.getTranslation("If disabled, the hostility state and custom siege system will be disabled.\n") +
+                Plugin.getTranslation("All other bonus is also not applied."));
+            HonorSiegeDuration = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Custom Siege Duration"), 180, Plugin.getTranslation("In minutes. Player will automatically exit siege mode after this many minutes has passed.\n") +
+                Plugin.getTranslation("Siege mode cannot be exited while duration has not passed."));
+            EnableHostileGlow = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Enable Hostile Glow"), true, Plugin.getTranslation("When set to true, hostile players will glow red."));
+            UseProximityGlow = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Enable Proximity Hostile Glow"), true, Plugin.getTranslation("If enabled, hostile players will only glow when they are close to other online player.\n") +
+                Plugin.getTranslation("If disabled, hostile players will always glow red."));
+            EnablePvPLadder = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Enable PvP Ladder"), true, Plugin.getTranslation("Enables the PvP Ladder in the PvP command."));
+            PvPLadderLength = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Ladder Length"), 10, Plugin.getTranslation("How many players should be displayed in the PvP Ladders."));
+            HonorSortLadder = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Sort PvP Ladder by Honor"), true, Plugin.getTranslation("This will automatically be false if honor system is not enabled."));
+            EnablePvPToggle = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Enable PvP Toggle"), false, Plugin.getTranslation("Enable/disable the pvp toggle feature in the pvp command."));
 
-            EnablePvPPunish = Config.Bind("PvP", "Enable PvP Punishment", false, "Enables the punishment system for killing lower level player.");
-            EnablePvPPunishAnnounce = Config.Bind("PvP", "Enable PvP Punish Announcement", true, "Announce all grief-kills that occured.");
-            ExcludeOfflineKills = Config.Bind("PvP", "Exclude Offline Grief", true, "Do not punish the killer if the victim is offline.");
-            PunishLevelDiff = Config.Bind("PvP", "Punish Level Difference", -10, "Only punish the killer if the victim level is this much lower.");
-            PunishOffenseLimit = Config.Bind("PvP", "Offense Limit", 3, "Killer must make this many offense before the punishment debuff is applied.");
-            PunishOffenseCooldown = Config.Bind("PvP", "Offense Cooldown", 300f, "Reset the offense counter after this many seconds has passed since last offense.");
-            PunishDuration = Config.Bind("PvP", "Debuff Duration", 1800f, "Apply the punishment debuff for this amount of time.");
+            EnablePvPPunish = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Enable PvP Punishment"), false, Plugin.getTranslation("Enables the punishment system for killing lower level player."));
+            EnablePvPPunishAnnounce = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Enable PvP Punish Announcement"), true, Plugin.getTranslation("Announce all grief-kills that occured."));
+            ExcludeOfflineKills = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Exclude Offline Grief"), true, Plugin.getTranslation("Do not punish the killer if the victim is offline."));
+            PunishLevelDiff = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Punish Level Difference"), -10, Plugin.getTranslation("Only punish the killer if the victim level is this much lower."));
+            PunishOffenseLimit = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Offense Limit"), 3, Plugin.getTranslation("Killer must make this many offense before the punishment debuff is applied."));
+            PunishOffenseCooldown = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Offense Cooldown"), 300f, Plugin.getTranslation("Reset the offense counter after this many seconds has passed since last offense."));
+            PunishDuration = Config.Bind(Plugin.getTranslation("PvP"), Plugin.getTranslation("Debuff Duration"), 1800f, Plugin.getTranslation("Apply the punishment debuff for this amount of time."));
 
-            BuffSiegeGolem = Config.Bind("Siege", "Buff Siege Golem", false, "Enabling this will reduce all incoming physical and spell damage according to config.");
-            GolemPhysicalReduction = Config.Bind("Siege", "Physical Damage Reduction", 0.5f, "Reduce incoming damage by this much. Ex.: 0.25 -> 25%");
-            GolemSpellReduction = Config.Bind("Siege", "Spell Damage Reduction", 0.5f, "Reduce incoming spell damage by this much. Ex.: 0.75 -> 75%");
+            BuffSiegeGolem = Config.Bind(Plugin.getTranslation("Siege"), Plugin.getTranslation("Buff Siege Golem"), false, Plugin.getTranslation("Enabling this will reduce all incoming physical and spell damage according to config."));
+            GolemPhysicalReduction = Config.Bind(Plugin.getTranslation("Siege"), Plugin.getTranslation("Physical Damage Reduction"), 0.5f, Plugin.getTranslation("Reduce incoming damage by this much. Ex.: 0.25 -> 25%"));
+            GolemSpellReduction = Config.Bind(Plugin.getTranslation("Siege"), Plugin.getTranslation("Spell Damage Reduction"), 0.5f, Plugin.getTranslation("Reduce incoming spell damage by this much. Ex.: 0.75 -> 75%"));
 
-            HunterHuntedEnabled = Config.Bind("HunterHunted", "Enable", true, "Enable/disable the HunterHunted system.");
-            HeatCooldown = Config.Bind("HunterHunted", "Heat Cooldown", 25, "Set the reduction value for player heat for every cooldown interval.");
-            BanditHeatCooldown = Config.Bind("HunterHunted", "Bandit Heat Cooldown", 5, "Set the reduction value for player heat from the bandits faction for every cooldown interval.");
-            CoolDown_Interval = Config.Bind("HunterHunted", "Cooldown Interval", 60, "Set every how many seconds should the cooldown interval trigger.");
-            Ambush_Interval = Config.Bind("HunterHunted", "Ambush Interval", 300, "Set how many seconds player can be ambushed again since last ambush.");
-            Ambush_Chance = Config.Bind("HunterHunted", "Ambush Chance", 50, "Set the percentage that an ambush may occur for every cooldown interval.");
-            Ambush_Despawn_Unit_Timer = Config.Bind("HunterHunted", "Ambush Despawn Timer", 300f, "Despawn the ambush squad after this many second if they are still alive.\n" +
-                "Must be higher than 1.");
+            HunterHuntedEnabled = Config.Bind(Plugin.getTranslation("HunterHunted"), Plugin.getTranslation("Enable"), true, Plugin.getTranslation("Enable/disable the HunterHunted system."));
+            HeatCooldown = Config.Bind(Plugin.getTranslation("HunterHunted"), Plugin.getTranslation("Heat Cooldown"), 25, Plugin.getTranslation("Set the reduction value for player heat for every cooldown interval."));
+            BanditHeatCooldown = Config.Bind(Plugin.getTranslation("HunterHunted"), Plugin.getTranslation("Bandit Heat Cooldown"), 5, Plugin.getTranslation("Set the reduction value for player heat from the bandits faction for every cooldown interval."));
+            CoolDown_Interval = Config.Bind(Plugin.getTranslation("HunterHunted"), Plugin.getTranslation("Cooldown Interval"), 60, Plugin.getTranslation("Set every how many seconds should the cooldown interval trigger."));
+            Ambush_Interval = Config.Bind(Plugin.getTranslation("HunterHunted"), Plugin.getTranslation("Ambush Interval"), 300, Plugin.getTranslation("Set how many seconds player can be ambushed again since last ambush."));
+            Ambush_Chance = Config.Bind(Plugin.getTranslation("HunterHunted"), Plugin.getTranslation("Ambush Chance"), 50, Plugin.getTranslation("Set the percentage that an ambush may occur for every cooldown interval."));
+            Ambush_Despawn_Unit_Timer = Config.Bind(Plugin.getTranslation("HunterHunted"), Plugin.getTranslation("Ambush Despawn Timer"), 300f, Plugin.getTranslation("Despawn the ambush squad after this many second if they are still alive.\n") +
+                Plugin.getTranslation("Must be higher than 1."));
 
 
-            EnableExperienceSystem = Config.Bind("Experience", "Enable", true, "Enable/disable the the Experience System.");
-            MaxLevel = Config.Bind("Experience", "Max Level", 80, "Configure the experience system max level.");
-            EXPMultiplier = Config.Bind("Experience", "Multiplier", 1.0f, "Multiply the EXP gained by player.\n" +
-                "Ex.: 0.7f -> Will reduce the EXP gained by 30%\nFormula: UnitKilledLevel * EXPMultiplier");
-            VBloodEXPMultiplier = Config.Bind("Experience", "VBlood Multiplier", 15f, "Multiply EXP gained from VBlood kill.\n" +
-                "Formula: EXPGained * VBloodMultiplier * EXPMultiplier");
-            EXPLostOnDeath = Config.Bind("Experience", "EXP Lost / Death", 0.10, "Percentage of experience the player lost for every death by NPC, no EXP is lost for PvP.\nFormula: TotalPlayerEXP - (EXPNeeded * EXPLost)");
-            EXPFormula_1 = Config.Bind("Experience", "Constant", 0.2f, "Increase or decrease the required EXP to level up.\n" +
-                "Formula: (level/constant)^2\n" +
-                "EXP Table & Formula: https://bit.ly/3npqdJw");
-            EXPGroupModifier = Config.Bind("Experience", "Group Modifier", 0.75, "Set the modifier for EXP gained for each ally(player) in vicinity.\n" +
-                "Example if you have 2 ally nearby, EXPGained = ((EXPGained * Modifier)*Modifier)");
-            EXPGroupMaxDistance = Config.Bind("Experience", "Ally Max Distance", 50f, "Set the maximum distance an ally(player) has to be from the player for them to share EXP with the player");
+            EnableExperienceSystem = Config.Bind(Plugin.getTranslation("Experience"), Plugin.getTranslation("Enable"), true, Plugin.getTranslation("Enable/disable the the Experience System."));
+            MaxLevel = Config.Bind(Plugin.getTranslation("Experience"), Plugin.getTranslation("Max Level"), 80, Plugin.getTranslation("Configure the experience system max level."));
+            EXPMultiplier = Config.Bind(Plugin.getTranslation("Experience"), Plugin.getTranslation("Multiplier"), 1.0f, Plugin.getTranslation("Multiply the EXP gained by player.\n") +
+                Plugin.getTranslation("Ex.: 0.7f -> Will reduce the EXP gained by 30%\nFormula: UnitKilledLevel * EXPMultiplier"));
+            VBloodEXPMultiplier = Config.Bind(Plugin.getTranslation("Experience"), Plugin.getTranslation("VBlood Multiplier"), 15f, Plugin.getTranslation("Multiply EXP gained from VBlood kill.\n") +
+                Plugin.getTranslation("Formula: EXPGained * VBloodMultiplier * EXPMultiplier"));
+            EXPLostOnDeath = Config.Bind(Plugin.getTranslation("Experience"), Plugin.getTranslation("EXP Lost / Death"), 0.10, Plugin.getTranslation("Percentage of experience the player lost for every death by NPC, no EXP is lost for PvP.\nFormula: TotalPlayerEXP - (EXPNeeded * EXPLost)"));
+            EXPFormula_1 = Config.Bind(Plugin.getTranslation("Experience"), Plugin.getTranslation("Constant"), 0.2f, Plugin.getTranslation("Increase or decrease the required EXP to level up.\n") +
+                Plugin.getTranslation("Formula: (level/constant)^2\n") +
+                Plugin.getTranslation("EXP Table & Formula: https://bit.ly/3npqdJw"));
+            EXPGroupModifier = Config.Bind(Plugin.getTranslation("Experience"), Plugin.getTranslation("Group Modifier"), 0.75, Plugin.getTranslation("Set the modifier for EXP gained for each ally(player) in vicinity.\n") +
+                Plugin.getTranslation("Example if you have 2 ally nearby, EXPGained = ((EXPGained * Modifier)*Modifier)"));
+            EXPGroupMaxDistance = Config.Bind(Plugin.getTranslation("Experience"), Plugin.getTranslation("Ally Max Distance"), 50f, Plugin.getTranslation("Set the maximum distance an ally(player) has to be from the player for them to share EXP with the player"));
 
-            EnableWeaponMaster = Config.Bind("Mastery", "Enable Weapon Mastery", true, "Enable/disable the weapon mastery system.");
-            EnableWeaponMasterDecay = Config.Bind("Mastery", "Enable Mastery Decay", true, "Enable/disable the decay of weapon mastery when the user is offline.");
-            WeaponMaxMastery = Config.Bind("Mastery", "Max Mastery Value", 100000, "Configure the maximum mastery the user can atain. (100000 is 100%)");
-            MasteryCombatTick = Config.Bind("Mastery", "Mastery Value/Combat Ticks", 5, "Configure the amount of mastery gained per combat ticks. (5 -> 0.005%)");
-            MasteryMaxCombatTicks = Config.Bind("Mastery", "Max Combat Ticks", 12, "Mastery will no longer increase after this many ticks is reached in combat. (1 tick = 5 seconds)");
-            WeaponMasterMultiplier = Config.Bind("Mastery", "Mastery Multiplier", 1f, "Multiply the gained mastery value by this amount.");
-            WeaponMastery_VBloodMultiplier = Config.Bind("Mastery", "VBlood Mastery Multiplier", 15f, "Multiply Mastery gained from VBlood kill.");
-            WeaponDecayInterval = Config.Bind("Mastery", "Decay Interval", 60, "Every amount of seconds the user is offline by the configured value will translate as 1 decay tick.");
-            Offline_Weapon_MasteryDecayValue = Config.Bind("Mastery", "Decay Value", 1, "Mastery will decay by this amount for every decay tick.(1 -> 0.001%)");
-            WeaponMasterySpellMasteryNeedsNoneToUse = Config.Bind("Mastery", "Unarmed Only Spell Mastery Use", true, "Gain the benefits of spell mastery only when you have no weapon equipped.");
-            WeaponMasterySpellMasteryNeedsNoneToLearn = Config.Bind("Mastery", "Unarmed Only Spell Mastery Learning", true, "Progress spell mastery only when you have no weapon equipped."); 
-            WeaponLinearSpellMastery = Config.Bind("Mastery", "Linear Mastery CDR", false, "Changes CDR from mastery to provide a linear increase to spells able to be cast in a given time by making the cdr diminishing.");
-            WeaponSpellMasteryCDRStacks = Config.Bind("Mastery", "Mastery CDR stacks", false, "Allows mastery cdr to stack with that from other sources, the reduction is multiplicative. E.G. Mist signet (10% cdr) and 100% mastery (50% cdr) will result in 55% total cdr, or 120%ish faster cooldowns.");
-            DetailedMasteryInfo = Config.Bind("Mastery", "Detailed Mastery Info", false, "Shows all mastery benefits when you use the .mastery command.");
+            EnableWeaponMaster = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Enable Weapon Mastery"), true, Plugin.getTranslation("Enable/disable the weapon mastery system."));
+            EnableWeaponMasterDecay = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Enable Mastery Decay"), true, Plugin.getTranslation("Enable/disable the decay of weapon mastery when the user is offline."));
+            WeaponMaxMastery = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Max Mastery Value"), 100000, Plugin.getTranslation("Configure the maximum mastery the user can atain. (100000 is 100%)"));
+            MasteryCombatTick = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Mastery Value/Combat Ticks"), 5, Plugin.getTranslation("Configure the amount of mastery gained per combat ticks. (5 -> 0.005%)"));
+            MasteryMaxCombatTicks = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Max Combat Ticks"), 12, Plugin.getTranslation("Mastery will no longer increase after this many ticks is reached in combat. (1 tick = 5 seconds)"));
+            WeaponMasterMultiplier = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Mastery Multiplier"), 1f, Plugin.getTranslation("Multiply the gained mastery value by this amount."));
+            WeaponMastery_VBloodMultiplier = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("VBlood Mastery Multiplier"), 15f, Plugin.getTranslation("Multiply Mastery gained from VBlood kill."));
+            WeaponDecayInterval = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Decay Interval"), 60, Plugin.getTranslation("Every amount of seconds the user is offline by the configured value will translate as 1 decay tick."));
+            Offline_Weapon_MasteryDecayValue = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Decay Value"), 1, Plugin.getTranslation("Mastery will decay by this amount for every decay tick.(1 -> 0.001%)"));
+            WeaponMasterySpellMasteryNeedsNoneToUse = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Unarmed Only Spell Mastery Use"), true, Plugin.getTranslation("Gain the benefits of spell mastery only when you have no weapon equipped."));
+            WeaponMasterySpellMasteryNeedsNoneToLearn = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Unarmed Only Spell Mastery Learning"), true, Plugin.getTranslation("Progress spell mastery only when you have no weapon equipped.")); 
+            WeaponLinearSpellMastery = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Linear Mastery CDR"), false, Plugin.getTranslation("Changes CDR from mastery to provide a linear increase to spells able to be cast in a given time by making the cdr diminishing."));
+            WeaponSpellMasteryCDRStacks = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Mastery CDR stacks"), false, Plugin.getTranslation("Allows mastery cdr to stack with that from other sources, the reduction is multiplicative. E.G. Mist signet (10% cdr) and 100% mastery (50% cdr) will result in 55% total cdr, or 120%ish faster cooldowns."));
+            DetailedMasteryInfo = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Detailed Mastery Info"), false, Plugin.getTranslation("Shows all mastery benefits when you use the .mastery command."));
 
-            UnarmedStats = Config.Bind("Mastery", "Unarmed Stats", " 0, 5 ", "The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs.");
-            UnarmedRates = Config.Bind("Mastery", "Unarmed Rates", " 0.25, 0.01 ", "The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately.");
-            SpearStats = Config.Bind("Mastery", "Spear Stats", " 0 ", "The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs.");
-            SpearRates = Config.Bind("Mastery", "Spear Rates", " 0.25", "The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately.");
-            SwordStats = Config.Bind("Mastery", "Sword Stats", " 0, 25 ", "The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs.");
-            SwordRates = Config.Bind("Mastery", "Sword Rates", " 0.125, 0.125 ", "The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately.");
-            ScytheStats = Config.Bind("Mastery", "Scythe Stats", " 0, 29 ", "The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs.");
-            ScytheRates = Config.Bind("Mastery", "Scythe Rates", " 0.125, 0.00125 ", "The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately.");
-            CrossbowStats = Config.Bind("Mastery", "Crossbow Stats", " 29 ", "The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs.");
-            CrossbowRates = Config.Bind("Mastery", "Crossbow Rates", " 0.0025", "The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately.");
-            MaceStats = Config.Bind("Mastery", "Mace Stats", " 4 ", "The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs.");
-            MaceRates = Config.Bind("Mastery", "Mace Rates", " 1 ", "The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately.");
-            SlasherStats = Config.Bind("Mastery", "Slasher Stats", " 29, 5 ", "The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs.");
-            SlasherRates = Config.Bind("Mastery", "Slasher Rates", " 0.00125, 0.005 ", "The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately.");
-            AxeStats = Config.Bind("Mastery", "Axe Stats", " 0, 4 ", "The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs.");
-            AxeRates = Config.Bind("Mastery", "Axe Rates", " 0.125, 0.5 ", "The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately.");
-            FishingPoleStats = Config.Bind("Mastery", "Fishing Pole Stats", " ", "The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs.");
-            FishingPoleRates = Config.Bind("Mastery", "Fishing Pole Rates", " ", "The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately.");
-            SpellStats = Config.Bind("Mastery", "Spell Stats", " 7 ", "The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs.");
-            SpellRates = Config.Bind("Mastery", "Spell Rates", " 100 ", "The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately.");
+            UnarmedStats = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Unarmed Stats"), Plugin.getTranslation(" 0, 5 "), Plugin.getTranslation("The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs."));
+            UnarmedRates = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Unarmed Rates"), Plugin.getTranslation(" 0.25, 0.01 "), Plugin.getTranslation("The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately."));
+            SpearStats = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Spear Stats"), Plugin.getTranslation(" 0 "), Plugin.getTranslation("The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs."));
+            SpearRates = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Spear Rates"), Plugin.getTranslation(" 0.25"), Plugin.getTranslation("The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately."));
+            SwordStats = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Sword Stats"), Plugin.getTranslation(" 0, 25 "), Plugin.getTranslation("The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs."));
+            SwordRates = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Sword Rates"), Plugin.getTranslation(" 0.125, 0.125 "), Plugin.getTranslation("The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately."));
+            ScytheStats = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Scythe Stats"), Plugin.getTranslation(" 0, 29 "), Plugin.getTranslation("The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs."));
+            ScytheRates = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Scythe Rates"), Plugin.getTranslation(" 0.125, 0.00125 "), Plugin.getTranslation("The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately."));
+            CrossbowStats = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Crossbow Stats"), Plugin.getTranslation(" 29 "), Plugin.getTranslation("The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs."));
+            CrossbowRates = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Crossbow Rates"), Plugin.getTranslation(" 0.0025"), Plugin.getTranslation("The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately."));
+            MaceStats = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Mace Stats"), Plugin.getTranslation(" 4 "), Plugin.getTranslation("The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs."));
+            MaceRates = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Mace Rates"), Plugin.getTranslation(" 1 "), Plugin.getTranslation("The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately."));
+            SlasherStats = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Slasher Stats"), Plugin.getTranslation(" 29, 5 "), Plugin.getTranslation("The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs."));
+            SlasherRates = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Slasher Rates"), Plugin.getTranslation(" 0.00125, 0.005 "), Plugin.getTranslation("The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately."));
+            AxeStats = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Axe Stats"), Plugin.getTranslation(" 0, 4 "), Plugin.getTranslation("The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs."));
+            AxeRates = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Axe Rates"), Plugin.getTranslation(" 0.125, 0.5 "), Plugin.getTranslation("The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately."));
+            FishingPoleStats = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Fishing Pole Stats"), Plugin.getTranslation(" "), Plugin.getTranslation("The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs."));
+            FishingPoleRates = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Fishing Pole Rates"), Plugin.getTranslation(" "), Plugin.getTranslation("The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately."));
+            SpellStats = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Spell Stats"), Plugin.getTranslation(" 7 "), Plugin.getTranslation("The stat IDs for what this weapon should boost, should be able to handle any number of stats. See the readme for a list of stat IDs."));
+            SpellRates = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Spell Rates"), Plugin.getTranslation(" 100 "), Plugin.getTranslation("The amount per point of mastery the stat should be boosted by. Some stats, like crit, have 1 as 100%, and CDR is % mastery to reach 50% cdr, so configure appropriately."));
 
-            effectivenessSubSystemEnabled = Config.Bind("Mastery", "Enable Effectiveness Subsystem", false, "Enables the Effectiveness mastery subsystem, which lets you reset your mastery to gain a multiplier to the effects of the matching mastery.");
-            maxEffectiveness = Config.Bind("Mastery", "Maximum Effectiveness", 10f, "The maximum mastery effectiveness where 1 is 100%.");
-            growthSubSystemEnabled = Config.Bind("Mastery", "Enable Growth Subsystem", false, "Enables the growth subsystem, when you reset mastery either increases or decreases your matching mastery growth rate, depending on config.");
-            minGrowth = Config.Bind("Mastery", "Minimum Growth Rate", 0.1f, "The minimum growth rate, where 1 is 100%");
-            maxGrowth = Config.Bind("Mastery", "Maximum Growth Rate", 10f, "the maximum growth rate where 1 is 100%");
-            growthPerEfficency = Config.Bind("Mastery", "Growth per efficency", 10f, "The amount of growth gained per point of efficency gained, if negative will reduce accordingly (gaining 100% efficency with -1 here will halve your current growth)");
+            effectivenessSubSystemEnabled = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Enable Effectiveness Subsystem"), false, Plugin.getTranslation("Enables the Effectiveness mastery subsystem, which lets you reset your mastery to gain a multiplier to the effects of the matching mastery."));
+            maxEffectiveness = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Maximum Effectiveness"), 10f, Plugin.getTranslation("The maximum mastery effectiveness where 1 is 100%."));
+            growthSubSystemEnabled = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Enable Growth Subsystem"), false, Plugin.getTranslation("Enables the growth subsystem, when you reset mastery either increases or decreases your matching mastery growth rate, depending on config."));
+            minGrowth = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Minimum Growth Rate"), 0.1f, Plugin.getTranslation("The minimum growth rate, where 1 is 100%"));
+            maxGrowth = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Maximum Growth Rate"), 10f, Plugin.getTranslation("the maximum growth rate where 1 is 100%"));
+            growthPerEfficency = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Growth per efficency"), 10f, Plugin.getTranslation("The amount of growth gained per point of efficency gained, if negative will reduce accordingly (gaining 100% efficency with -1 here will halve your current growth)"));
 
-            WeaponDecayInterval = Config.Bind("Mastery", "Decay Interval", 60, "Every amount of seconds the user is offline by the configured value will translate as 1 decay tick.");
-            Offline_Weapon_MasteryDecayValue = Config.Bind("Mastery", "Decay Value", 1, "Mastery will decay by this amount for every decay tick.(1 -> 0.001%)");
-            WeaponMasterySpellMasteryNeedsNoneToUse = Config.Bind("Mastery", "Unarmed Only Spell Mastery Use", true, "Gain the benefits of spell mastery only when you have no weapon equipped.");
-            WeaponMasterySpellMasteryNeedsNoneToLearn = Config.Bind("Mastery", "Unarmed Only Spell Mastery Learning", true, "Progress spell mastery only when you have no weapon equipped.");
-            WeaponLinearSpellMastery = Config.Bind("Mastery", "Linear Mastery CDR", false, "Changes CDR from mastery to provide a linear increase to spells able to be cast in a given time by making the cdr diminishing.");
-            WeaponSpellMasteryCDRStacks = Config.Bind("Mastery", "Mastery CDR stacks", false, "Allows mastery cdr to stack with that from other sources, the reduction is multiplicative. E.G. Mist signet (10% cdr) and 100% mastery (50% cdr) will result in 55% total cdr, or 120%ish faster cooldowns.");
+            WeaponDecayInterval = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Decay Interval"), 60, Plugin.getTranslation("Every amount of seconds the user is offline by the configured value will translate as 1 decay tick."));
+            Offline_Weapon_MasteryDecayValue = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Decay Value"), 1, Plugin.getTranslation("Mastery will decay by this amount for every decay tick.(1 -> 0.001%)"));
+            WeaponMasterySpellMasteryNeedsNoneToUse = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Unarmed Only Spell Mastery Use"), true, Plugin.getTranslation("Gain the benefits of spell mastery only when you have no weapon equipped."));
+            WeaponMasterySpellMasteryNeedsNoneToLearn = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Unarmed Only Spell Mastery Learning"), true, Plugin.getTranslation("Progress spell mastery only when you have no weapon equipped."));
+            WeaponLinearSpellMastery = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Linear Mastery CDR"), false, Plugin.getTranslation("Changes CDR from mastery to provide a linear increase to spells able to be cast in a given time by making the cdr diminishing."));
+            WeaponSpellMasteryCDRStacks = Config.Bind(Plugin.getTranslation("Mastery"), Plugin.getTranslation("Mastery CDR stacks"), false, Plugin.getTranslation("Allows mastery cdr to stack with that from other sources, the reduction is multiplicative. E.G. Mist signet (10% cdr) and 100% mastery (50% cdr) will result in 55% total cdr, or 120%ish faster cooldowns."));
             
 
-            EnableWorldDynamics = Config.Bind("World Dynamics", "Enable Faction Dynamics", true, "All other faction dynamics data & config is withing /RPGMods/Saves/factionstats.json file.");
-            WDGrowOnKill = Config.Bind("World Dynamics", "Factions grow on kill", false, "Inverts the faction dynamic system, so that they grow stronger when killed and weaker over time.");
+            EnableWorldDynamics = Config.Bind(Plugin.getTranslation("World Dynamics"), Plugin.getTranslation("Enable Faction Dynamics"), true, Plugin.getTranslation("All other faction dynamics data & config is withing /RPGMods/Saves/factionstats.json file."));
+            WDGrowOnKill = Config.Bind(Plugin.getTranslation("World Dynamics"), Plugin.getTranslation("Factions grow on kill"), false, Plugin.getTranslation("Inverts the faction dynamic system, so that they grow stronger when killed and weaker over time."));
 
-            if (!Directory.Exists("BepInEx/config/RPGMods")) Directory.CreateDirectory("BepInEx/config/RPGMods");
-            if (!Directory.Exists("BepInEx/config/RPGMods/Saves")) Directory.CreateDirectory("BepInEx/config/RPGMods/Saves");
+            if (!Directory.Exists(Plugin.getTranslation("BepInEx/config/RPGMods"))) Directory.CreateDirectory(Plugin.getTranslation("BepInEx/config/RPGMods"));
+            if (!Directory.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves"))) Directory.CreateDirectory(Plugin.getTranslation("BepInEx/config/RPGMods/Saves"));
 
-            if (!File.Exists("BepInEx/config/RPGMods/kits.json"))
+            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/kits.json")))
             {
-                var stream = File.Create("BepInEx/config/RPGMods/kits.json");
+                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/kits.json"));
                 stream.Dispose();
             }
         }
 
-        public override void Load()
-        {
+        public override void Load() {
+            Logger = Log;
             loadLocalization();
             InitConfig();
-            Logger = Log;
             harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             TaskRunner.Initialize();
 
-            Log.LogInfo(Database.getTranslation("Plugin ")+PluginInfo.PLUGIN_GUID+ Database.getTranslation(" is loaded!"));
+            Log.LogInfo(Plugin.getTranslation(Plugin.getTranslation("Plugin "))+PluginInfo.PLUGIN_GUID+ Plugin.getTranslation(Plugin.getTranslation(" is loaded!")));
         }
-
-        private void loadLocalization() {
-            if (!File.Exists("BepInEx/config/RPGMods/Language.json")) {
-                FileStream stream = File.Create("BepInEx/config/RPGMods/Language.json");
+        public static void loadLocalization() {
+            if (!Directory.Exists(Plugin.getTranslation("BepInEx/config/RPGMods"))) Directory.CreateDirectory(Plugin.getTranslation("BepInEx/config/RPGMods"));
+            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Language.json"))) {
+                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Language.json"));
                 stream.Dispose();
             }
-            string json = File.ReadAllText("BepInEx/config/RPGMods/Language.json");
+
+            string json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Language.json"));
             try {
-                Database.localizationData = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
-                Plugin.Logger.LogWarning(Database.getTranslation("Translation DB Populated."));
+                Plugin.localizationData = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                Plugin.Logger.LogWarning(Plugin.getTranslation(Plugin.getTranslation("Translation DB Populated.")));
             }
             catch {
-                Database.localizationData = new Dictionary<string, string>();
-                Plugin.Logger.LogWarning(Database.getTranslation("Translation DB Created."));
+                Plugin.localizationData = new Dictionary<string, string>();
+                Plugin.Logger.LogWarning(Plugin.getTranslation(Plugin.getTranslation("Translation DB Created.")));
             }
+        }
+        public static void saveLocalization() {
+
+            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Language.json"), JsonSerializer.Serialize(Plugin.localizationData, Database.JSON_options));
         }
 
         public override bool Unload()
@@ -502,44 +522,44 @@ namespace RPGMods
         }
 
         public static int[] parseIntArrayConifg(string data) {
-            Plugin.Logger.LogInfo(Database.getTranslation(">>>parsing int array: ") + data);
-            var match = Regex.Match(data, "([0-9]+)");
+            Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("parsing int array: ")) + data);
+            var match = Regex.Match(data, Plugin.getTranslation("([0-9]+)"));
             List<int> list = new List<int>();
             while (match.Success) {
                 try {
-                    Plugin.Logger.LogInfo(Database.getTranslation(">>>got int: ") + match.Value);
+                    Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("got int: ")) + match.Value);
                     int temp = int.Parse(match.Value, CultureInfo.InvariantCulture);
-                    Plugin.Logger.LogInfo(Database.getTranslation(">>>int parsed into: ") + temp);
+                    Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("int parsed into: ")) + temp);
                     list.Add(temp);
                 }
                 catch {
-                    Plugin.Logger.LogWarning(Database.getTranslation("Error interperting integer value: ") + match.ToString());
+                    Plugin.Logger.LogWarning(Plugin.getTranslation(Plugin.getTranslation("Error interperting integer value: ")) + match.ToString());
                 }
                 match = match.NextMatch();
             }
-            Plugin.Logger.LogInfo(Database.getTranslation(">>>done parsing int array"));
+            Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("done parsing int array")));
             int[] result = list.ToArray();
             return result;
         }
         public static float[] parseFloatArrayConifg(string data) {
-            Plugin.Logger.LogInfo(Database.getTranslation(">>>parsing float array: ") + data);
-            var match = Regex.Match(data, "[-+]?[0-9]*\\.?[0-9]+");
+            Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("parsing float array: ")) + data);
+            var match = Regex.Match(data, Plugin.getTranslation("[-+]?[0-9]*\\.?[0-9]+"));
             List<float> list = new List<float>();
             while (match.Success) {
                 try {
-                    Plugin.Logger.LogInfo(Database.getTranslation(">>>got float: ") + match.Value);
+                    Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("got float: ")) + match.Value);
                     float temp = float.Parse(match.Value, CultureInfo.InvariantCulture);
-                    Plugin.Logger.LogInfo(Database.getTranslation(">>>float parsed into: ") + temp);
+                    Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("float parsed into: ")) + temp);
                     list.Add(temp);
                 }
                 catch {
-                    Plugin.Logger.LogWarning(Database.getTranslation("Error interperting float value: ") + match.ToString());
+                    Plugin.Logger.LogWarning(Plugin.getTranslation(Plugin.getTranslation("Error interperting float value: ")) + match.ToString());
                 }
                 
                 match = match.NextMatch();
             }
 
-            Plugin.Logger.LogInfo(Database.getTranslation(">>>done parsing float array"));
+            Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("done parsing float array")));
             float[] result = list.ToArray();
             return result;
         }
