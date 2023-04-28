@@ -15,6 +15,7 @@ using UnityEngine;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.Json;
 
 #if WETSTONE
 using Wetstone.API;
@@ -157,7 +158,7 @@ namespace RPGMods
                 if (_serverWorld != null) return _serverWorld;
 
                 _serverWorld = GetWorld("Server")
-                    ?? throw new System.Exception("There is no Server world (yet). Did you install a server mod on the client?");
+                    ?? throw new System.Exception(Database.getTranslation("There is no Server world (yet). Did you install a server mod on the client?"));
                 return _serverWorld;
             }
         }
@@ -322,6 +323,7 @@ namespace RPGMods
 
         public override void Load()
         {
+            loadLocalization();
             InitConfig();
             Logger = Log;
             harmony = new Harmony(PluginInfo.PLUGIN_GUID);
@@ -329,7 +331,23 @@ namespace RPGMods
 
             TaskRunner.Initialize();
 
-            Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+            Log.LogInfo(Database.getTranslation("Plugin ")+PluginInfo.PLUGIN_GUID+ Database.getTranslation(" is loaded!"));
+        }
+
+        private void loadLocalization() {
+            if (!File.Exists("BepInEx/config/RPGMods/Language.json")) {
+                FileStream stream = File.Create("BepInEx/config/RPGMods/Language.json");
+                stream.Dispose();
+            }
+            string json = File.ReadAllText("BepInEx/config/RPGMods/Language.json");
+            try {
+                Database.localizationData = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                Plugin.Logger.LogWarning(Database.getTranslation("Translation DB Populated."));
+            }
+            catch {
+                Database.localizationData = new Dictionary<string, string>();
+                Plugin.Logger.LogWarning(Database.getTranslation("Translation DB Created."));
+            }
         }
 
         public override bool Unload()
@@ -484,44 +502,44 @@ namespace RPGMods
         }
 
         public static int[] parseIntArrayConifg(string data) {
-            Plugin.Logger.LogInfo(">>>parsing int array: " + data);
+            Plugin.Logger.LogInfo(Database.getTranslation(">>>parsing int array: ") + data);
             var match = Regex.Match(data, "([0-9]+)");
             List<int> list = new List<int>();
             while (match.Success) {
                 try {
-                    Plugin.Logger.LogInfo(">>>got int: " + match.Value);
+                    Plugin.Logger.LogInfo(Database.getTranslation(">>>got int: ") + match.Value);
                     int temp = int.Parse(match.Value, CultureInfo.InvariantCulture);
-                    Plugin.Logger.LogInfo(">>>int parsed into: " + temp);
+                    Plugin.Logger.LogInfo(Database.getTranslation(">>>int parsed into: ") + temp);
                     list.Add(temp);
                 }
                 catch {
-                    Plugin.Logger.LogWarning("Error interperting integer value: " + match.ToString());
+                    Plugin.Logger.LogWarning(Database.getTranslation("Error interperting integer value: ") + match.ToString());
                 }
                 match = match.NextMatch();
             }
-            Plugin.Logger.LogInfo(">>>done parsing int array");
+            Plugin.Logger.LogInfo(Database.getTranslation(">>>done parsing int array"));
             int[] result = list.ToArray();
             return result;
         }
         public static float[] parseFloatArrayConifg(string data) {
-            Plugin.Logger.LogInfo(">>>parsing float array: " + data);
+            Plugin.Logger.LogInfo(Database.getTranslation(">>>parsing float array: ") + data);
             var match = Regex.Match(data, "[-+]?[0-9]*\\.?[0-9]+");
             List<float> list = new List<float>();
             while (match.Success) {
                 try {
-                    Plugin.Logger.LogInfo(">>>got float: " + match.Value);
+                    Plugin.Logger.LogInfo(Database.getTranslation(">>>got float: ") + match.Value);
                     float temp = float.Parse(match.Value, CultureInfo.InvariantCulture);
-                    Plugin.Logger.LogInfo(">>>float parsed into: " + temp);
+                    Plugin.Logger.LogInfo(Database.getTranslation(">>>float parsed into: ") + temp);
                     list.Add(temp);
                 }
                 catch {
-                    Plugin.Logger.LogWarning("Error interperting float value: " + match.ToString());
+                    Plugin.Logger.LogWarning(Database.getTranslation("Error interperting float value: ") + match.ToString());
                 }
                 
                 match = match.NextMatch();
             }
 
-            Plugin.Logger.LogInfo(">>>done parsing float array");
+            Plugin.Logger.LogInfo(Database.getTranslation(">>>done parsing float array"));
             float[] result = list.ToArray();
             return result;
         }

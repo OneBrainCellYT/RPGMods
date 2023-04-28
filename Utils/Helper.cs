@@ -27,6 +27,7 @@ namespace RPGMods.Utils
 
         public static Regex rxName = new Regex(@"(?<=\])[^\[].*");
 
+
         public static bool GetUserActivityGridSystem(out UserActivityGridSystem uags)
         {
             uags = Plugin.Server.GetExistingSystem<AiPrioritizationSystem>()?._UserActivityGridSystem;

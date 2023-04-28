@@ -456,5 +456,22 @@ namespace RPGMods.Utils
 
 
         }
+
+
+        public static Dictionary<string, string> localizationData = new Dictionary<string, string>();
+        public static string getTranslation(string phrase) {
+            string returnVal = ">>> Error with getting translation! <<<";
+            if (localizationData.TryGetValue(phrase, out string temp)) {
+                returnVal = temp;
+            }
+            else {
+                setTranslation(phrase, phrase);
+            }
+            return returnVal;
+        }
+        public static void setTranslation(string key, string phrase) {
+            localizationData.Remove(key);
+            localizationData.Add(key, phrase);
+        }
     }
 }
