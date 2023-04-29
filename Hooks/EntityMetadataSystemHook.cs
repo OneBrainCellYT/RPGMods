@@ -8,10 +8,10 @@ namespace RPGMods.Hooks
     //-- Can Intercept Entity Spawn Here! Nice!
     //var GUID = Helper.GetPrefabGUID(entity);
     //var Name = Helper.GetPrefabName(GUID);
-    //Plugin.Logger.LogWarning($"{entity} - {Name}");
+    //Plugin.Logger.LogWarning($Plugin.getTranslation("{entity} - {Name}"));
     //foreach (var t in __instance.EntityManager.GetComponentTypes(entity))
     //{
-    //    Plugin.Logger.LogWarning($"--{t}");
+    //    Plugin.Logger.LogWarning($Plugin.getTranslation("--{t}"));
     //}
 
     [HarmonyPatch(typeof(EntityMetadataSystem), nameof(EntityMetadataSystem.OnUpdate))]

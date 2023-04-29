@@ -4,7 +4,7 @@ using Unity.Collections;
 
 namespace RPGMods.Commands
 {
-    [Command("rename", Usage = "rename <Player Name/SteamID> <New Name>", Description = "Rename the specified player.")]
+    [Command(("rename"), Usage = ("rename <Player Name/SteamID> <New Name>"), Description = ("Rename the specified player."))]
     public static class Rename
     {
         public static void Initialize(Context ctx)
@@ -26,7 +26,7 @@ namespace RPGMods.Commands
 
                 if (!isPlayerFound)
                 {
-                    Output.CustomErrorMessage(ctx, $"Unable to find the specified player.");
+                    Output.CustomErrorMessage(ctx, Plugin.getTranslation("Unable to find the specified player."));
                     return;
                 }
 
@@ -35,7 +35,7 @@ namespace RPGMods.Commands
 
             if (Regex.IsMatch(NewName.ToString(), @"[^a-zA-Z0-9]"))
             {
-                Output.CustomErrorMessage(ctx, "Name can only contain alphanumeric!");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Name can only contain alphanumeric!"));
                 return;
             }
 
@@ -43,29 +43,29 @@ namespace RPGMods.Commands
             //-- The max legth assignable is actually 61 bytes.
             if (NewName.utf8LengthInBytes > 20)
             {
-                Output.CustomErrorMessage(ctx, $"New name is too long!");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("New name is too long!"));
                 return;
             }
 
             if (Cache.NamePlayerCache.TryGetValue(NewName.ToString().ToLower(), out _))
             {
-                Output.CustomErrorMessage(ctx, $"Name is already taken!");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Name is already taken!"));
                 return;
             }
 
             Helper.RenamePlayer(userEntity, playerEntity, NewName);
             if (userEntity.Equals(ctx.Event.SenderUserEntity))
             {
-                Output.SendSystemMessage(ctx, $"Your name has been updated to \"{NewName}\".");
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Your name has been updated to \"")+NewName+Plugin.getTranslation("\"."));
             }
             else
             {
-                Output.SendSystemMessage(ctx, $"Player \"{ctx.Args[0]}\" name has been updated to \"{NewName}\".");
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Player \"")+ctx.Args[0]+Plugin.getTranslation("\" name has been updated to \"")+NewName+Plugin.getTranslation("\"."));
             }
         }
     }
 
-    [Command("adminrename", Usage = "adminrename <Player Name/SteamID> <New Name>", Description = "Rename the specified player. Careful, the new name isn't parsed to be alphanumeric.")]
+    [Command(("adminrename"), Usage = ("adminrename <Player Name/SteamID> <New Name>"), Description = ("Rename the specified player. Careful, the new name isn't parsed to be alphanumeric."))]
     public static class Adminrename
     {
         public static void Initialize(Context ctx)
@@ -87,7 +87,7 @@ namespace RPGMods.Commands
 
                 if (!isPlayerFound)
                 {
-                    Output.CustomErrorMessage(ctx, $"Unable to find the specified player.");
+                    Output.CustomErrorMessage(ctx, Plugin.getTranslation("Unable to find the specified player."));
                     return;
                 }
 
@@ -98,24 +98,24 @@ namespace RPGMods.Commands
             //-- The max legth assignable is actually 61 bytes.
             if (NewName.utf8LengthInBytes > 20)
             {
-                Output.CustomErrorMessage(ctx, $"New name is too long!");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("New name is too long!"));
                 return;
             }
 
             if (Cache.NamePlayerCache.TryGetValue(NewName.ToString().ToLower(), out _))
             {
-                Output.CustomErrorMessage(ctx, $"Name is already taken!");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Name is already taken!"));
                 return;
             }
 
             Helper.RenamePlayer(userEntity, playerEntity, NewName);
             if (userEntity.Equals(ctx.Event.SenderUserEntity))
             {
-                Output.SendSystemMessage(ctx, $"Your name has been updated to \"{NewName}\".");
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Your name has been updated to \"")+NewName+Plugin.getTranslation("\"."));
             }
             else
             {
-                Output.SendSystemMessage(ctx, $"Player \"{ctx.Args[0]}\" name has been updated to \"{NewName}\".");
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Player \"")+ctx.Args[0]+Plugin.getTranslation("\" name has been updated to \"")+NewName+Plugin.getTranslation("\"."));
             }
         }
     }

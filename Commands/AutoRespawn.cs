@@ -8,7 +8,7 @@ using Unity.Entities;
 
 namespace RPGMods.Commands
 {
-    [Command("autorespawn", Usage = "autorespawn [<PlayerName>]", Description = "Toggle auto respawn on the same position on death.")]
+    [Command(Plugin.getTranslation("autorespawn"), Usage = Plugin.getTranslation("autorespawn [<PlayerName>]"), Description = Plugin.getTranslation("Toggle auto respawn on the same position on death."))]
     public static class AutoRespawn
     {
         public static void Initialize(Context ctx)
@@ -18,11 +18,11 @@ namespace RPGMods.Commands
             string PlayerName = ctx.Event.User.CharacterName.ToString();
             bool isServerWide = false;
 
-            bool isAllowed = ctx.Event.User.IsAdmin || PermissionSystem.PermissionCheck(ctx.Event.User.PlatformId, "autorespawn_args");
+            bool isAllowed = ctx.Event.User.IsAdmin || PermissionSystem.PermissionCheck(ctx.Event.User.PlatformId, Plugin.getTranslation("autorespawn_args"));
             if (ctx.Args.Length > 0 && isAllowed)
             {
                 string TargetName = string.Join(' ', ctx.Args);
-                if (TargetName.ToLower().Equals("all"))
+                if (TargetName.ToLower().Equals(Plugin.getTranslation("all")))
                 {
                     SteamID = 1;
                     isServerWide = true;
@@ -37,7 +37,7 @@ namespace RPGMods.Commands
                     }
                     else
                     {
-                        Output.CustomErrorMessage(ctx, $"Player \"{TargetName}\" not found!");
+                        Output.CustomErrorMessage(ctx, Plugin.getTranslation("Player \"")+TargetName+Plugin.getTranslation("\" not found!"));
                         return;
                     }
                 }
@@ -46,14 +46,14 @@ namespace RPGMods.Commands
             if (isAutoRespawn) isAutoRespawn = false;
             else isAutoRespawn = true;
             UpdateAutoRespawn(SteamID, isAutoRespawn);
-            string s = isAutoRespawn ? "Activated" : "Deactivated";
+            string s = isAutoRespawn ? Plugin.getTranslation("Activated") : Plugin.getTranslation("Deactivated");
             if (isServerWide)
             {
-                Output.SendSystemMessage(ctx, $"Server wide Auto Respawn <color=#ffff00>{s}</color>");
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Server wide Auto Respawn <color=#ffff00>")+s+ Plugin.getTranslation("</color>"));
             }
             else
             {
-                Output.SendSystemMessage(ctx, $"Player \"{PlayerName}\" Auto Respawn <color=#ffff00>{s}</color>");
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Player \"")+PlayerName+Plugin.getTranslation("\" Auto Respawn <color=#ffff00>") + s + Plugin.getTranslation("</color>"));
             }
         }
 
@@ -91,12 +91,12 @@ namespace RPGMods.Commands
             try
             {
                 Database.autoRespawn = JsonSerializer.Deserialize<Dictionary<ulong, bool>>(json);
-                Plugin.Logger.LogWarning("AutoRespawn DB Populated.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("AutoRespawn DB Populated."));
             }
             catch
             {
                 Database.autoRespawn = new Dictionary<ulong, bool>();
-                Plugin.Logger.LogWarning("AutoRespawn DB Created.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("AutoRespawn DB Created."));
             }
         }
     }

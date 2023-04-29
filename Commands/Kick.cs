@@ -2,7 +2,7 @@
 
 namespace RPGMods.Commands
 {
-    [Command("kick", Usage = "kick <playername>", Description = "Kick the specified player out of the server.")]
+    [Command(("kick"), Usage = ("kick <playername>"), Description = ("Kick the specified player out of the server."))]
     public static class Kick
     {
         public static void Initialize(Context ctx)
@@ -18,11 +18,11 @@ namespace RPGMods.Commands
             if (Helper.FindPlayer(name, true, out _, out var targetUserEntity))
             {
                 Helper.KickPlayer(targetUserEntity);
-                Output.SendSystemMessage(ctx, $"Player \"{name}\" has been kicked from server.");
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Player \"")+name+Plugin.getTranslation("\" has been kicked from server."));
             }
             else
             {
-                Output.CustomErrorMessage(ctx, "Specified player not found.");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Specified player not found."));
             }
         }
     }

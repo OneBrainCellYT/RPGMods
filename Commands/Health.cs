@@ -4,7 +4,7 @@ using RPGMods.Utils;
 
 namespace RPGMods.Commands
 {
-    [Command("health, hp", Usage = "health <percentage> [<player name>]", Description = "Sets your current Health")]
+    [Command(("health, hp"), Usage = ("health <percentage> [<player name>]"), Description = ("Sets your current Health"))]
     public static class Health
     {
         public static void Initialize(Context ctx)
@@ -34,7 +34,7 @@ namespace RPGMods.Commands
                 }
                 else
                 {
-                    Utils.Output.CustomErrorMessage(ctx, $"Player \"{targetName}\" not found.");
+                    Utils.Output.CustomErrorMessage(ctx, Plugin.getTranslation("Player \"")+targetName+Plugin.getTranslation("\" not found."));
                     return;
                 }
             }
@@ -47,7 +47,7 @@ namespace RPGMods.Commands
             };
             Plugin.Server.GetExistingSystem<DebugEventsSystem>().ChangeHealthEvent(UserIndex, ref HealthEvent);
 
-            Output.SendSystemMessage(ctx, $"Player \"{PlayerName}\" Health set to <color=#ffff00>{Value}%</color>");
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("Player \"")+PlayerName+Plugin.getTranslation("\" Health set to <color=#ffff00>")+Value+Plugin.getTranslation(" %</color>"));
         }
     }
 }

@@ -11,7 +11,7 @@ namespace RPGMods.Hooks {
 [HarmonyPatch]
 public class DeathEventListenerSystem_Patch
 {
-    [HarmonyPatch(typeof(DeathEventListenerSystem), "OnUpdate")]
+    [HarmonyPatch(typeof(DeathEventListenerSystem), Plugin.getTranslation("OnUpdate"))]
     [HarmonyPostfix]
     public static void Postfix(DeathEventListenerSystem __instance)
     {
@@ -35,7 +35,7 @@ public class DeathEventListenerSystem_Patch
                     Blood bloodData = __instance.EntityManager.GetComponentData<Blood>(ev.Killer);
                         PlayerCharacter p = __instance.EntityManager.GetComponentData<PlayerCharacter>(ev.Killer);
                         bloodData = __instance.EntityManager.GetComponentData<Blood>(p.UserEntity.GetEntityOnServer());
-                    Output.SendLore(ev.Killer, $"Bloodtype -<color=#fffffffe>{bloodData.BloodType} - {bloodData.Quality}%</color>");*/
+                    Output.SendLore(ev.Killer, $Plugin.getTranslation("Bloodtype -<color=#fffffffe>{bloodData.BloodType} - {bloodData.Quality}%</color>"));*/
                 }
                 //-- ----------------------
 

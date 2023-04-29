@@ -22,14 +22,14 @@ namespace RPGMods.Systems
             if (Plugin.isInitialized == false || loopInProgress == true) return;
 
             loopInProgress = true;
-            if (Object.ReferenceEquals(Database.FactionStats, null)){ Plugin.Logger.LogWarning("Faction Stats loaded as Null, check the json file."); return;}
+            if (Object.ReferenceEquals(Database.FactionStats, null)){ Plugin.Logger.LogWarning(Plugin.getTranslation("Faction Stats loaded as Null, check the json file.")); return;}
             foreach (var faction in Database.FactionStats)
             {
                 if (faction.Value.Active == false) continue;
 
                 var factionStats = faction.Value;
                 if(factionStats.RequiredPower < 0) {
-                    Plugin.Logger.LogWarning(factionStats.Name + "'s required power to levelup is negative, fixing it now.");
+                    Plugin.Logger.LogWarning(factionStats.Name + Plugin.getTranslation("'s required power to levelup is negative, fixing it now."));
                     factionStats.RequiredPower *= -1;
                     Database.FactionStats[faction.Key] = factionStats;
                 }
@@ -75,7 +75,7 @@ namespace RPGMods.Systems
             if (!em.HasComponent<FactionReference>(entity)) return;
 
             var factionID = em.GetComponentData<FactionReference>(entity).FactionGuid._Value.GetHashCode();
-            if (Object.ReferenceEquals(Database.FactionStats, null)){ Plugin.Logger.LogWarning("Faction Stats loaded as Null, check the json file."); return;}
+            if (Object.ReferenceEquals(Database.FactionStats, null)){ Plugin.Logger.LogWarning(Plugin.getTranslation("Faction Stats loaded as Null, check the json file.")); return;}
             if (!Database.FactionStats.TryGetValue(factionID, out FactionData factionStats)) return;
 
             if (factionStats.Active == false) return;
@@ -98,7 +98,7 @@ namespace RPGMods.Systems
             if (Database.IgnoredMonstersGUID.Contains(mobGUID)) return;
 
             var factionID = em.GetComponentData<FactionReference>(entity).FactionGuid._Value.GetHashCode();
-            if (Object.ReferenceEquals(Database.FactionStats, null)){ Plugin.Logger.LogWarning("Faction Stats loaded as Null, check the json file."); return;}
+            if (Object.ReferenceEquals(Database.FactionStats, null)){ Plugin.Logger.LogWarning(Plugin.getTranslation("Faction Stats loaded as Null, check the json file.")); return;}
             if (!Database.FactionStats.TryGetValue(factionID, out var factionStats)) return;
 
             if (factionStats.Active == false) return;
@@ -164,22 +164,22 @@ namespace RPGMods.Systems
 
         public static void SaveFactionStats()
         {
-            File.WriteAllText("BepInEx/config/RPGMods/Saves/factionstats.json", JsonSerializer.Serialize(Database.FactionStats, Database.Pretty_JSON_options));
+            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/factionstats.json"), JsonSerializer.Serialize(Database.FactionStats, Database.Pretty_JSON_options));
         }
 
         public static void SaveIgnoredMobs()
         {
-            File.WriteAllText("BepInEx/config/RPGMods/Saves/ignoredmonsters.json", JsonSerializer.Serialize(Database.IgnoredMonsters, Database.Pretty_JSON_options));
+            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/ignoredmonsters.json"), JsonSerializer.Serialize(Database.IgnoredMonsters, Database.Pretty_JSON_options));
         }
 
         public static void LoadIgnoredMobs()
         {
-            if (!File.Exists("BepInEx/config/RPGMods/Saves/ignoredmonsters.json"))
+            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/ignoredmonsters.json")))
             {
-                var stream = File.Create("BepInEx/config/RPGMods/Saves/ignoredmonsters.json");
+                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/ignoredmonsters.json"));
                 stream.Dispose();
             }
-            string content = File.ReadAllText("BepInEx/config/RPGMods/Saves/ignoredmonsters.json");
+            string content = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/ignoredmonsters.json"));
             try
             {
                 Database.IgnoredMonsters = JsonSerializer.Deserialize<HashSet<string>>(content);
@@ -191,41 +191,41 @@ namespace RPGMods.Systems
                         Database.IgnoredMonstersGUID.Add(GUID);
                     }
                 }
-                Plugin.Logger.LogWarning("IgnoredMonsters DB Populated.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("IgnoredMonsters DB Populated."));
             }
             catch
             {
                 Database.IgnoredMonsters = new HashSet<string>();
                 Database.IgnoredMonstersGUID = new HashSet<PrefabGUID>();
 
-                Database.IgnoredMonsters.Add("CHAR_Undead_Banshee");
-                Database.IgnoredMonstersGUID.Add(Database.database_units["CHAR_Undead_Banshee"]);
+                Database.IgnoredMonsters.Add(Plugin.getTranslation("CHAR_Undead_Banshee"));
+                Database.IgnoredMonstersGUID.Add(Database.database_units[Plugin.getTranslation("CHAR_Undead_Banshee")]);
 
                 SaveIgnoredMobs();
 
-                Plugin.Logger.LogWarning("IgnoredMonsters DB Created.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("IgnoredMonsters DB Created."));
             }
         }
 
         public static void LoadFactionStats()
         {
-            if (!File.Exists("BepInEx/config/RPGMods/Saves/factionstats.json"))
+            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/factionstats.json")))
             {
-                var stream = File.Create("BepInEx/config/RPGMods/Saves/factionstats.json");
+                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/factionstats.json"));
                 stream.Dispose();
             }
-            string content = File.ReadAllText("BepInEx/config/RPGMods/Saves/factionstats.json");
+            string content = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/factionstats.json"));
             try
             {
                 Database.FactionStats = JsonSerializer.Deserialize<ConcurrentDictionary<int, FactionData>>(content);
-                Plugin.Logger.LogWarning("FactionStats DB Populated.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("FactionStats DB Populated."));
             }
             catch
             {
                 Database.FactionStats = new ConcurrentDictionary<int, FactionData>();
                 Database.FactionStats.TryAdd(-1632475814, new FactionData()
                 {
-                    Name = "Faction_Ashfolk",
+                    Name = Plugin.getTranslation("Faction_Ashfolk"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -254,7 +254,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(-413163549, new FactionData()
                 {
-                    Name = "Faction_Bandits",
+                    Name = Plugin.getTranslation("Faction_Bandits"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -283,7 +283,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(1344481611, new FactionData()
                 {
-                    Name = "Faction_Bear",
+                    Name = Plugin.getTranslation("Faction_Bear"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -312,7 +312,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(1094603131, new FactionData()
                 {
-                    Name = "Faction_ChurchOfLum",
+                    Name = Plugin.getTranslation("Faction_ChurchOfLum"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -341,7 +341,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(2395673, new FactionData()
                 {
-                    Name = "Faction_ChurchOfLum_SpotShapeshiftVampire",
+                    Name = Plugin.getTranslation("Faction_ChurchOfLum_SpotShapeshiftVampire"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -370,7 +370,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(10678632, new FactionData()
                 {
-                    Name = "Faction_Critters",
+                    Name = Plugin.getTranslation("Faction_Critters"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -399,7 +399,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(1522496317, new FactionData()
                 {
-                    Name = "Faction_Cursed",
+                    Name = Plugin.getTranslation("Faction_Cursed"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -428,7 +428,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(1513046884, new FactionData()
                 {
-                    Name = "Faction_Elementals",
+                    Name = Plugin.getTranslation("Faction_Elementals"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -457,7 +457,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(1731533561, new FactionData()
                 {
-                    Name = "Faction_Harpy",
+                    Name = Plugin.getTranslation("Faction_Harpy"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -486,7 +486,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(1057375699, new FactionData()
                 {
-                    Name = "Faction_Militia",
+                    Name = Plugin.getTranslation("Faction_Militia"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -515,7 +515,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(1597367490, new FactionData()
                 {
-                    Name = "Faction_NatureSpirit",
+                    Name = Plugin.getTranslation("Faction_NatureSpirit"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -544,7 +544,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(-1414061934, new FactionData()
                 {
-                    Name = "Faction_Plants",
+                    Name = Plugin.getTranslation("Faction_Plants"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -573,7 +573,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(-1632009503, new FactionData()
                 {
-                    Name = "Faction_Spiders",
+                    Name = Plugin.getTranslation("Faction_Spiders"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -602,7 +602,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(887347866, new FactionData()
                 {
-                    Name = "Faction_Traders",
+                    Name = Plugin.getTranslation("Faction_Traders"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -631,7 +631,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(929074293, new FactionData()
                 {
-                    Name = "Faction_Undead",
+                    Name = Plugin.getTranslation("Faction_Undead"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -660,7 +660,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(2120169232, new FactionData()
                 {
-                    Name = "Faction_VampireHunters",
+                    Name = Plugin.getTranslation("Faction_VampireHunters"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -689,7 +689,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(-2024618997, new FactionData()
                 {
-                    Name = "Faction_Werewolf",
+                    Name = Plugin.getTranslation("Faction_Werewolf"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -718,7 +718,7 @@ namespace RPGMods.Systems
 
                 Database.FactionStats.TryAdd(-1671358863, new FactionData()
                 {
-                    Name = "Faction_Wolves",
+                    Name = Plugin.getTranslation("Faction_Wolves"),
                     Active = false,
                     Level = 0,
                     MaxLevel = 0,
@@ -745,7 +745,7 @@ namespace RPGMods.Systems
                     }
                 });
                 SaveFactionStats();
-                Plugin.Logger.LogWarning("FactionStats DB Created.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("FactionStats DB Created."));
             }
         }
     }

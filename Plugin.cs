@@ -26,7 +26,7 @@ namespace RPGMods
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 
 #if WETSTONE
-    [BepInDependency("xyz.molenzwiebel.wetstone")]
+    [BepInDependency(Plugin.getTranslation("xyz.molenzwiebel.wetstone"))]
     [Reloadable]
     public class Plugin : BasePlugin, IRunOnInitialized
 #else
@@ -148,7 +148,7 @@ namespace RPGMods
 
         public static Dictionary<string, string> localizationData = new Dictionary<string, string>();
         public static string getTranslation(string phrase) {
-            string returnVal = ">>> Error with getting translation! <<<";
+            string returnVal = Plugin.getTranslation(">>> Error with getting translation! <<<");
             if (localizationData.TryGetValue(phrase, out string temp)) {
                 returnVal = temp;
             }
@@ -174,7 +174,7 @@ namespace RPGMods
                 if (_serverWorld != null) return _serverWorld;
 
                 _serverWorld = GetWorld(Plugin.getTranslation("Server"))
-                    ?? throw new System.Exception(Plugin.getTranslation(Plugin.getTranslation("There is no Server world (yet). Did you install a server mod on the client?")));
+                    ?? throw new System.Exception(Plugin.getTranslation("There is no Server world (yet). Did you install a server mod on the client?"));
                 return _serverWorld;
             }
         }
@@ -195,11 +195,11 @@ namespace RPGMods
         }
 
         public void InitConfig() {
-            string config = Plugin.getTranslation(Plugin.getTranslation("Config"));
-            Prefix = Config.Bind(config, Plugin.getTranslation("Prefix"), ".", Plugin.getTranslation("The prefix used for chat commands."));
+            string config = Plugin.getTranslation("Config");
+            Prefix = Config.Bind(config, Plugin.getTranslation("Prefix"), Plugin.getTranslation("."), Plugin.getTranslation("The prefix used for chat commands."));
             DelayedCommands = Config.Bind(config, Plugin.getTranslation("Command Delay"), 5f, Plugin.getTranslation("The number of seconds user need to wait out before sending another command.\n") +
                 Plugin.getTranslation("Admin will always bypass this."));
-            DisabledCommands = Config.Bind(config, Plugin.getTranslation("Disabled Commands"), "Plugin.getTranslation(", ")Enter command names to disable them, abbreviation are included automatically. Seperated by commas.\n" +
+            DisabledCommands = Config.Bind(config, Plugin.getTranslation("Disabled Commands"), Plugin.getTranslation("Plugin.getTranslation("), Plugin.getTranslation(")Enter command names to disable them, abbreviation are included automatically. Seperated by commas.\n") +
                 Plugin.getTranslation("Ex.: save,godmode"));
             WaypointLimit = Config.Bind(config, Plugin.getTranslation("Waypoint Limit"), 3, Plugin.getTranslation("Set a waypoint limit per user."));
 
@@ -346,7 +346,7 @@ namespace RPGMods
 
             TaskRunner.Initialize();
 
-            Log.LogInfo(Plugin.getTranslation(Plugin.getTranslation("Plugin "))+PluginInfo.PLUGIN_GUID+ Plugin.getTranslation(Plugin.getTranslation(" is loaded!")));
+            Log.LogInfo(Plugin.getTranslation("Plugin ")+PluginInfo.PLUGIN_GUID+ Plugin.getTranslation(" is loaded!"));
         }
         public static void loadLocalization() {
             if (!Directory.Exists(Plugin.getTranslation("BepInEx/config/RPGMods"))) Directory.CreateDirectory(Plugin.getTranslation("BepInEx/config/RPGMods"));
@@ -358,11 +358,11 @@ namespace RPGMods
             string json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Language.json"));
             try {
                 Plugin.localizationData = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
-                Plugin.Logger.LogWarning(Plugin.getTranslation(Plugin.getTranslation("Translation DB Populated.")));
+                Plugin.Logger.LogWarning(Plugin.getTranslation("Translation DB Populated."));
             }
             catch {
                 Plugin.localizationData = new Dictionary<string, string>();
-                Plugin.Logger.LogWarning(Plugin.getTranslation(Plugin.getTranslation("Translation DB Created.")));
+                Plugin.Logger.LogWarning(Plugin.getTranslation("Translation DB Created."));
             }
         }
         public static void saveLocalization() {
@@ -522,44 +522,44 @@ namespace RPGMods
         }
 
         public static int[] parseIntArrayConifg(string data) {
-            Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("parsing int array: ")) + data);
+            Plugin.Logger.LogInfo(Plugin.getTranslation("parsing int array: ") + data);
             var match = Regex.Match(data, Plugin.getTranslation("([0-9]+)"));
             List<int> list = new List<int>();
             while (match.Success) {
                 try {
-                    Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("got int: ")) + match.Value);
+                    Plugin.Logger.LogInfo(Plugin.getTranslation("got int: ") + match.Value);
                     int temp = int.Parse(match.Value, CultureInfo.InvariantCulture);
-                    Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("int parsed into: ")) + temp);
+                    Plugin.Logger.LogInfo(Plugin.getTranslation("int parsed into: ") + temp);
                     list.Add(temp);
                 }
                 catch {
-                    Plugin.Logger.LogWarning(Plugin.getTranslation(Plugin.getTranslation("Error interperting integer value: ")) + match.ToString());
+                    Plugin.Logger.LogWarning(Plugin.getTranslation("Error interperting integer value: ") + match.ToString());
                 }
                 match = match.NextMatch();
             }
-            Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("done parsing int array")));
+            Plugin.Logger.LogInfo(Plugin.getTranslation("done parsing int array"));
             int[] result = list.ToArray();
             return result;
         }
         public static float[] parseFloatArrayConifg(string data) {
-            Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("parsing float array: ")) + data);
+            Plugin.Logger.LogInfo(Plugin.getTranslation("parsing float array: ") + data);
             var match = Regex.Match(data, Plugin.getTranslation("[-+]?[0-9]*\\.?[0-9]+"));
             List<float> list = new List<float>();
             while (match.Success) {
                 try {
-                    Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("got float: ")) + match.Value);
+                    Plugin.Logger.LogInfo(Plugin.getTranslation("got float: ") + match.Value);
                     float temp = float.Parse(match.Value, CultureInfo.InvariantCulture);
-                    Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("float parsed into: ")) + temp);
+                    Plugin.Logger.LogInfo(Plugin.getTranslation("float parsed into: ") + temp);
                     list.Add(temp);
                 }
                 catch {
-                    Plugin.Logger.LogWarning(Plugin.getTranslation(Plugin.getTranslation("Error interperting float value: ")) + match.ToString());
+                    Plugin.Logger.LogWarning(Plugin.getTranslation("Error interperting float value: ") + match.ToString());
                 }
                 
                 match = match.NextMatch();
             }
 
-            Plugin.Logger.LogInfo(Plugin.getTranslation(Plugin.getTranslation("done parsing float array")));
+            Plugin.Logger.LogInfo(Plugin.getTranslation("done parsing float array"));
             float[] result = list.ToArray();
             return result;
         }

@@ -46,7 +46,7 @@ namespace RPGMods.Hooks
         public static void RPGMods_Initialize_Method()
         {
             Plugin.Initialize();
-            Plugin.harmony.Unpatch(typeof(HandleGameplayEventsSystem).GetMethod("OnUpdate"), typeof(InitializationPatch).GetMethod("RPGMods_Initialize_Method"));
+            Plugin.harmony.Unpatch(typeof(HandleGameplayEventsSystem).GetMethod(Plugin.getTranslation("OnUpdate")), typeof(InitializationPatch).GetMethod(Plugin.getTranslation("RPGMods_Initialize_Method")));
         }
     }
 

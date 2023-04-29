@@ -26,12 +26,12 @@ namespace RPGMods.Commands
             PrefabGUID guid = Helper.GetGUIDFromName(name);
             if (guid.GuidHash == 0)
             {
-                Output.CustomErrorMessage(ctx, "Could not find specified item name.");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Could not find specified item name."));
                 return;
             }
 
             Helper.AddItemToInventory(ctx, guid, amount);
-            Output.SendSystemMessage(ctx, $"You got <color=#ffff00>{amount} {CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name)}</color>");
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("You got <color=#ffff00>")+amount+Plugin.getTranslation(" ")+CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name) + Plugin.getTranslation("</color>"));
         }
     }
 }

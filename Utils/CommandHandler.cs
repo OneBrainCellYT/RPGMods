@@ -10,7 +10,7 @@ namespace RPGMods.Utils
 {
     public class CommandHandler
     {
-        public static string Prefix = ".";
+        public static string Prefix = Plugin.getTranslation(".");
         public static string DisabledCommands { get; set; }
 
         public static float delay_Cooldown = 5;
@@ -31,7 +31,7 @@ namespace RPGMods.Utils
 
                 if (!PermissionSystem.PermissionCheck(ev.User.PlatformId, primary) && !ev.User.IsAdmin)
                 {
-                    Output.CustomErrorMessage(ev, "You do not have the required permissions to use that.");
+                    Output.CustomErrorMessage(ev, Plugin.getTranslation("You do not have the required permissions to use that."));
                     return;
                 }
 
@@ -39,11 +39,11 @@ namespace RPGMods.Utils
                 if (getCurrentTime < last_Command && !ev.User.IsAdmin)
                 {
                     int wait = (int)Math.Ceiling(last_Command - getCurrentTime);
-                    Output.CustomErrorMessage(ev, $"Please wait for {wait} second(s) before sending another command.");
+                    Output.CustomErrorMessage(ev, Plugin.getTranslation("Please wait for ")+wait + Plugin.getTranslation(" second(s) before sending another command."));
                     return;
                 }
                 Cache.command_Cooldown[ev.User.PlatformId] = getCurrentTime + delay_Cooldown;
-                var cmd = type.GetMethod("Initialize");
+                var cmd = type.GetMethod(Plugin.getTranslation("Initialize"));
                 cmd.Invoke(null, new[] { new Context(Prefix, ev, args) });
                 return;
             }
@@ -52,7 +52,7 @@ namespace RPGMods.Utils
 
         private static bool NameExists(Type type, string command, out string primary)
         {
-            primary = "invalid";
+            primary = Plugin.getTranslation("invalid");
             List<string> aliases = type.GetAttributeValue((CommandAttribute cmd) => cmd.Aliases);
             if (aliases.Any(x => x.ToLower() == command.ToLower()))
             {
@@ -75,13 +75,13 @@ namespace RPGMods.Utils
 
         public CommandAttribute(string name, string usage = "", string description = "None", int reqPermission = 100)
         {
-            Name = name;
-            Usage = usage;
-            Description = description;
+            Name = Plugin.getTranslation(name);
+            Usage = Plugin.getTranslation(usage);
+            Description = Plugin.getTranslation(description);
             ReqPermission = reqPermission;
 
             Aliases = new List<string>();
-            Aliases.AddRange(Name.ToLower().Split(", "));
+            Aliases.AddRange(Name.ToLower().Split(Plugin.getTranslation(", ")));
         }
     }
 

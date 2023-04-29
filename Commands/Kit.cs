@@ -9,7 +9,7 @@ using System.Text.Json;
 
 namespace RPGMods.Commands
 {
-    [Command("kit", "kit <Name>", "Gives you a previously specified set of items.")]
+    [Command(("kit"), ("kit <Name>"), ("Gives you a previously specified set of items."))]
     public static class Kit
     {
         private static List<ItemKit> kits;
@@ -18,7 +18,7 @@ namespace RPGMods.Commands
         {
             if (ctx.Args.Length < 1)
             {
-                Output.SendSystemMessage(ctx, $"Kit name missing.");
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Kit name missing."));
                 return;
             }
 
@@ -31,11 +31,11 @@ namespace RPGMods.Commands
                 {
                     Helper.AddItemToInventory(ctx, new PrefabGUID(guid.Key), guid.Value);
                 }
-                Output.SendSystemMessage(ctx, $"You got the kit: <color=#ffff00>{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name)}</color>");
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("You got the kit: <color=#ffff00>")+CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name) + Plugin.getTranslation("</color>"));
             }
             catch
             {
-                Output.SendSystemMessage(ctx, $"Kit doesn't exist.");
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Kit doesn't exist."));
                 return;
             }
         }
@@ -51,12 +51,12 @@ namespace RPGMods.Commands
             try
             {
                 kits = JsonSerializer.Deserialize<List<ItemKit>>(json);
-                Plugin.Logger.LogWarning("Kits DB Populated.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("Kits DB Populated."));
             }
             catch
             {
                 kits = new List<ItemKit>();
-                Plugin.Logger.LogWarning("Kits DB Created.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("Kits DB Created."));
             }
         }
 

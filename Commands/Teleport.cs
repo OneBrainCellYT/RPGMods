@@ -6,7 +6,7 @@ using Unity.Transforms;
 
 namespace RPGMods.Commands
 {
-    [Command("teleport, tp", "teleport <Name>", "Teleport you to another online player within your clan.")]
+    [Command(Plugin.getTranslation("teleport, tp"), Plugin.getTranslation("teleport <Name>"), Plugin.getTranslation("Teleport you to another online player within your clan."))]
     public static class Teleport
     {
         public static void Initialize(Context ctx)
@@ -18,7 +18,7 @@ namespace RPGMods.Commands
 
             if (Helper.IsPlayerInCombat(UserCharacter))
             {
-                Output.CustomErrorMessage(ctx, "Unable to use command! You're in combat!");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Unable to use command! You're in combat!"));
                 return;
             }
             if (ctx.Args.Length < 1)
@@ -40,20 +40,20 @@ namespace RPGMods.Commands
             }
             else
             {
-                Output.CustomErrorMessage(ctx, "Target player not found.");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Target player not found."));
                 return;
             }
 
             var serverGameManager = Plugin.Server.GetExistingSystem<ServerScriptMapper>()?._ServerGameManager;
             if (!serverGameManager._TeamChecker.IsAllies(user_TeamComponent, target_TeamComponent))
             {
-                Output.CustomErrorMessage(ctx, "Unable to teleport to player from another Clan!");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Unable to teleport to player from another Clan!"));
                 return;
             }
 
             if (Helper.IsPlayerInCombat(TargetChar))
             {
-                Output.CustomErrorMessage(ctx, $"Unable to teleport! Player \"{TargetName}\" is in combat!");
+                Output.CustomErrorMessage(ctx, $Plugin.getTranslation("Unable to teleport! Player \"){TargetName}\Plugin.getTranslation(" is in combat!"));
                 return;
             }
 

@@ -28,7 +28,7 @@ namespace RPGMods.Utils
 
             Plugin.saveLocalization();
 
-            Plugin.Logger.LogInfo("All database saved to JSON file.");
+            Plugin.Logger.LogInfo(Plugin.getTranslation("All database saved to JSON file."));
         }
 
         public static void LoadDatabase()
@@ -52,7 +52,7 @@ namespace RPGMods.Utils
             WorldDynamicsSystem.LoadFactionStats();
             WorldDynamicsSystem.LoadIgnoredMobs();
 
-            Plugin.Logger.LogInfo("All database is now loaded.");
+            Plugin.Logger.LogInfo(Plugin.getTranslation("All database is now loaded."));
         }
     }
 }

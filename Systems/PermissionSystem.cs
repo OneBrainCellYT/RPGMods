@@ -82,18 +82,18 @@ namespace RPGMods.Systems
             var SortedPermission = Database.user_permission.ToList();
             SortedPermission.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
             var ListPermission = SortedPermission;
-            messages.Add($"===================================");
-            if (ListPermission.Count == 0) messages.Add($"<color=#fffffffe>No Result</color>");
+            messages.Add($Plugin.getTranslation("==================================="));
+            if (ListPermission.Count == 0) messages.Add($Plugin.getTranslation("<color=#fffffffe>No Result</color>"));
             else
             {
                 int i = 0;
                 foreach (var result in ListPermission)
                 {
                     i++;
-                    messages.Add($"{i}. <color=#fffffffe>{Helper.GetNameFromSteamID(result.Key)} : {result.Value}</color>");
+                    messages.Add($Plugin.getTranslation("{i}. <color=#fffffffe>{Helper.GetNameFromSteamID(result.Key)} : {result.Value}</color>"));
                 }
             }
-            messages.Add($"===================================");
+            messages.Add($Plugin.getTranslation("==================================="));
 
             TaskRunner.Start(taskWorld => SendPermissionList(ctx, messages), false);
         }
@@ -223,89 +223,89 @@ namespace RPGMods.Systems
 
         public static void SavePermissions()
         {
-            File.WriteAllText("BepInEx/config/RPGMods/command_permission.json", JsonSerializer.Serialize(Database.command_permission, Database.Pretty_JSON_options));
+            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/command_permission.json"), JsonSerializer.Serialize(Database.command_permission, Database.Pretty_JSON_options));
         }
 
         public static void SaveUserPermission()
         {
-            File.WriteAllText("BepInEx/config/RPGMods/user_permission.json", JsonSerializer.Serialize(Database.user_permission, Database.Pretty_JSON_options));
+            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/user_permission.json"), JsonSerializer.Serialize(Database.user_permission, Database.Pretty_JSON_options));
         }
 
         public static void LoadPermissions()
         {
-            if (!File.Exists("BepInEx/config/RPGMods/user_permission.json"))
+            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/user_permission.json")))
             {
-                FileStream stream = File.Create("BepInEx/config/RPGMods/user_permission.json");
+                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/user_permission.json"));
                 stream.Dispose();
             }
-            string json = File.ReadAllText("BepInEx/config/RPGMods/user_permission.json");
+            string json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/user_permission.json"));
             try
             {
                 Database.user_permission = JsonSerializer.Deserialize<Dictionary<ulong, int>>(json);
-                Plugin.Logger.LogWarning("UserPermissions DB Populated");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("UserPermissions DB Populated"));
             }
             catch
             {
                 Database.user_permission = new Dictionary<ulong, int>();
-                Plugin.Logger.LogWarning("UserPermission DB Created.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("UserPermission DB Created."));
             }
 
-            if (!File.Exists("BepInEx/config/RPGMods/command_permission.json"))
+            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/command_permission.json")))
             {
-                FileStream stream = File.Create("BepInEx/config/RPGMods/command_permission.json");
+                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/command_permission.json"));
                 stream.Dispose();
             }
-            json = File.ReadAllText("BepInEx/config/RPGMods/command_permission.json");
+            json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/command_permission.json"));
             try
             {
                 Database.command_permission = JsonSerializer.Deserialize<Dictionary<string, int>>(json);
-                Plugin.Logger.LogWarning("CommandPermissions DB Populated");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("CommandPermissions DB Populated"));
             }
             catch
             {
                 Database.command_permission = new Dictionary<string, int>();
-                Database.command_permission["help"] = 0;
-                Database.command_permission["ping"] = 0;
-                Database.command_permission["myinfo"] = 0;
-                Database.command_permission["pvp"] = 0;
-                Database.command_permission["pvp_args"] = 100;
-                Database.command_permission["siege"] = 0;
-                Database.command_permission["siege_args"] = 100;
-                Database.command_permission["heat"] = 0;
-                Database.command_permission["heat_args"] = 100;
-                Database.command_permission["experience"] = 0;
-                Database.command_permission["experience_args"] = 100;
-                Database.command_permission["mastery"] = 0;
-                Database.command_permission["mastery_args"] = 100;
-                Database.command_permission["autorespawn"] = 100;
-                Database.command_permission["autorespawn_args"] = 100;
-                Database.command_permission["waypoint"] = 100;
-                Database.command_permission["waypoint_args"] = 100;
-                Database.command_permission["ban"] = 100;
-                Database.command_permission["bloodpotion"] = 100;
-                Database.command_permission["blood"] = 100;
-                Database.command_permission["customspawn"] = 100;
-                Database.command_permission["give"] = 100;
-                Database.command_permission["godmode"] = 100;
-                Database.command_permission["health"] = 100;
-                Database.command_permission["kick"] = 100;
-                Database.command_permission["kit"] = 100;
-                Database.command_permission["nocooldown"] = 100;
-                Database.command_permission["permission"] = 100;
-                Database.command_permission["playerinfo"] = 100;
-                Database.command_permission["punish"] = 100;
-                Database.command_permission["rename"] = 100;
-                Database.command_permission["adminrename"] = 100;
-                Database.command_permission["resetcooldown"] = 100;
-                Database.command_permission["save"] = 100;
-                Database.command_permission["shutdown"] = 100;
-                Database.command_permission["spawnnpc"] = 100;
-                Database.command_permission["speed"] = 100;
-                Database.command_permission["sunimmunity"] = 100;
-                Database.command_permission["teleport"] = 100;
-                Database.command_permission["worlddynamics"] = 100;
+                Database.command_permission[Plugin.getTranslation("help")] = 0;
+                Database.command_permission[Plugin.getTranslation("ping")] = 0;
+                Database.command_permission[Plugin.getTranslation("myinfo")] = 0;
+                Database.command_permission[Plugin.getTranslation("pvp")] = 0;
+                Database.command_permission[Plugin.getTranslation("pvp_args")] = 100;
+                Database.command_permission[Plugin.getTranslation("siege")] = 0;
+                Database.command_permission[Plugin.getTranslation("siege_args")] = 100;
+                Database.command_permission[Plugin.getTranslation("heat")] = 0;
+                Database.command_permission[Plugin.getTranslation("heat_args")] = 100;
+                Database.command_permission[Plugin.getTranslation("experience")] = 0;
+                Database.command_permission[Plugin.getTranslation("experience_args")] = 100;
+                Database.command_permission[Plugin.getTranslation("mastery")] = 0;
+                Database.command_permission[Plugin.getTranslation("mastery_args")] = 100;
+                Database.command_permission[Plugin.getTranslation("autorespawn")] = 100;
+                Database.command_permission[Plugin.getTranslation("autorespawn_args")] = 100;
+                Database.command_permission[Plugin.getTranslation("waypoint")] = 100;
+                Database.command_permission[Plugin.getTranslation("waypoint_args")] = 100;
+                Database.command_permission[Plugin.getTranslation("ban")] = 100;
+                Database.command_permission[Plugin.getTranslation("bloodpotion")] = 100;
+                Database.command_permission[Plugin.getTranslation("blood")] = 100;
+                Database.command_permission[Plugin.getTranslation("customspawn")] = 100;
+                Database.command_permission[Plugin.getTranslation("give")] = 100;
+                Database.command_permission[Plugin.getTranslation("godmode")] = 100;
+                Database.command_permission[Plugin.getTranslation("health")] = 100;
+                Database.command_permission[Plugin.getTranslation("kick")] = 100;
+                Database.command_permission[Plugin.getTranslation("kit")] = 100;
+                Database.command_permission[Plugin.getTranslation("nocooldown")] = 100;
+                Database.command_permission[Plugin.getTranslation("permission")] = 100;
+                Database.command_permission[Plugin.getTranslation("playerinfo")] = 100;
+                Database.command_permission[Plugin.getTranslation("punish")] = 100;
+                Database.command_permission[Plugin.getTranslation("rename")] = 100;
+                Database.command_permission[Plugin.getTranslation("adminrename")] = 100;
+                Database.command_permission[Plugin.getTranslation("resetcooldown")] = 100;
+                Database.command_permission[Plugin.getTranslation("save")] = 100;
+                Database.command_permission[Plugin.getTranslation("shutdown")] = 100;
+                Database.command_permission[Plugin.getTranslation("spawnnpc")] = 100;
+                Database.command_permission[Plugin.getTranslation("speed")] = 100;
+                Database.command_permission[Plugin.getTranslation("sunimmunity")] = 100;
+                Database.command_permission[Plugin.getTranslation("teleport")] = 100;
+                Database.command_permission[Plugin.getTranslation("worlddynamics")] = 100;
                 SavePermissions();
-                Plugin.Logger.LogWarning("CommandPermissions DB Created.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("CommandPermissions DB Created."));
             }
         }
     }

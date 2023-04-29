@@ -67,21 +67,21 @@ namespace RPGMods.Systems
 
         public static void SaveBanList()
         {
-            File.WriteAllText("BepInEx/config/RPGMods/user_banlist.json", JsonSerializer.Serialize(Database.user_banlist, Database.Pretty_JSON_options));
+            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/user_banlist.json"), JsonSerializer.Serialize(Database.user_banlist, Database.Pretty_JSON_options));
         }
 
         public static void LoadBanList()
         {
-            if (!File.Exists("BepInEx/config/RPGMods/user_banlist.json"))
+            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/user_banlist.json")))
             {
-                FileStream stream = File.Create("BepInEx/config/RPGMods/user_banlist.json");
+                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/user_banlist.json"));
                 stream.Dispose();
             }
-            string json = File.ReadAllText("BepInEx/config/RPGMods/user_banlist.json");
+            string json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/user_banlist.json"));
             try
             {
                 Database.user_banlist = JsonSerializer.Deserialize<Dictionary<ulong, BanData>>(json);
-                Plugin.Logger.LogWarning("Banlist DB Populated");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("Banlist DB Populated"));
             }
             catch
             {

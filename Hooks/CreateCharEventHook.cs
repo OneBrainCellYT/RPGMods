@@ -20,7 +20,7 @@ namespace RPGMods.Hooks
                     __result = Helper.ValidateName(characterNameString, out invalidReason);
 
                     var userData = __instance.EntityManager.GetComponentData<User>(userEntity);
-                    characterNameString = "[" + PvPSystem.GetHonorTitle(0).Title + "]" + characterNameString;
+                    characterNameString = Plugin.getTranslation("[") + PvPSystem.GetHonorTitle(0).Title + Plugin.getTranslation("]") + characterNameString;
                     userData.CharacterName = (FixedString64)characterNameString;
                     __instance.EntityManager.SetComponentData(userEntity, userData);
 

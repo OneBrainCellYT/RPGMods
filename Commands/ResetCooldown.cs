@@ -4,7 +4,7 @@ using Unity.Entities;
 
 namespace RPGMods.Commands
 {
-    [Command("resetcooldown, cd", Usage = "resetcooldown [<Player Name>]", Description = "Instantly cooldown all ability & skills for the player.")]
+    [Command(Plugin.getTranslation("resetcooldown, cd"), Usage = Plugin.getTranslation("resetcooldown [<Player Name>]"), Description = Plugin.getTranslation("Instantly cooldown all ability & skills for the player."))]
     public static class ResetCooldown
     {
         public static void Initialize(Context ctx)
@@ -23,7 +23,7 @@ namespace RPGMods.Commands
                 }
                 else
                 {
-                    Output.CustomErrorMessage(ctx, $"Could not find the specified player \"{name}\".");
+                    Output.CustomErrorMessage(ctx, $Plugin.getTranslation("Could not find the specified player \"){name}\Plugin.getTranslation("."));
                     return;
                 }
             }
@@ -47,7 +47,7 @@ namespace RPGMods.Commands
                     entityManager.SetComponentData(abilityState, abilityCooldownState);
                 }
             }
-            Output.SendSystemMessage(ctx, $"Player \"{CharName}\" cooldown resetted.");
+            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Player \"){CharName}\Plugin.getTranslation(" cooldown resetted."));
         }
     }
 }

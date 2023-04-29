@@ -171,7 +171,7 @@ namespace RPGMods.Systems
                         if (isHonorTitleEnabled)
                         {
                             var true_name = Helper.GetTrueName(killer_name);
-                            killer_name = "[" + KillerHonorInfo.Title + "]" + true_name;
+                            killer_name = Plugin.getTranslation("[") + KillerHonorInfo.Title + Plugin.getTranslation("]") + true_name;
                             KillerStats.PlayerName = killer_name;
                             renamePlayer = true;
                         }
@@ -255,7 +255,7 @@ namespace RPGMods.Systems
                         if (isHonorTitleEnabled)
                         {
                             var true_name = Helper.GetTrueName(killer_name);
-                            killer_name = "[" + KillerHonorInfo.Title + "]" + true_name;
+                            killer_name = Plugin.getTranslation("[") + KillerHonorInfo.Title + Plugin.getTranslation("]") + true_name;
                             KillerStats.PlayerName = killer_name;
                             renamePlayer = true;
                         }
@@ -273,8 +273,8 @@ namespace RPGMods.Systems
                 Helper.RenamePlayer(killer_userEntity, KillerEntity, killer_name);
             }
 
-            ServerChatUtils.SendSystemMessageToClient(em, victim_user, Utils.Color.Red($"You've been defeated by \"{killer_name}\""));
-            if (isAnnounceKills) ServerChatUtils.SendSystemMessageToAllClients(em, $"Vampire {Utils.Color.Red(killer_name)} has defeated {Utils.Color.Green(victim_name)}!");
+            ServerChatUtils.SendSystemMessageToClient(em, victim_user, Utils.Color.Red($Plugin.getTranslation("You've been defeated by \"){killer_name}\""));
+            if (isAnnounceKills) ServerChatUtils.SendSystemMessageToAllClients(em, $Plugin.getTranslation("Vampire {Utils.Color.Red(killer_name)} has defeated {Utils.Color.Green(victim_name)}!"));
         }
 
         public static bool HostileON(ulong SteamID, Entity playerEntity, Entity userEntity)
@@ -336,7 +336,7 @@ namespace RPGMods.Systems
                 if (siegeData.IsSiegeOn == false)
                 {
                     Cache.SteamPlayerCache.TryGetValue(SteamID, out var playerData);
-                    ServerChatUtils.SendSystemMessageToAllClients(em, $"{Utils.Color.Red(playerData.CharacterName.ToString())} has entered {Color.Red("Active Siege")}!");
+                    ServerChatUtils.SendSystemMessageToAllClients(em, Utils.Color.Red(playerData.CharacterName.ToString()) + Plugin.getTranslation(" has entered ")+Color.Red(Plugin.getTranslation("Active Siege")) + Plugin.getTranslation("!"));
 
                     siegeData.IsSiegeOn = true;
                     siegeData.SiegeEndTime = DateTime.Now.AddMinutes(PvPSystem.SiegeDuration);
@@ -355,7 +355,7 @@ namespace RPGMods.Systems
                 if (siegeData.IsSiegeOn == false)
                 {
                     Cache.SteamPlayerCache.TryGetValue(SteamID, out var playerData);
-                    ServerChatUtils.SendSystemMessageToAllClients(em, $"{Utils.Color.Red(playerData.CharacterName.ToString())} has entered {Color.Red("Active Siege")}!");
+                    ServerChatUtils.SendSystemMessageToAllClients(em, $Plugin.getTranslation("{Utils.Color.Red(playerData.CharacterName.ToString())} has entered {Color.Red(")Active SiegePlugin.getTranslation(")}!"));
                 }
                 siegeData.IsSiegeOn = true;
                 siegeData.SiegeEndTime = DateTime.MinValue;
@@ -406,8 +406,8 @@ namespace RPGMods.Systems
 
             var List = SortedList.Skip(page * recordsPerPage).Take(recordsPerPage);
             int order = (page * recordsPerPage);
-            messages.Add($"============ Siege List [{page+1}/{maxPage}] ============");
-            if (List.Count() == 0) messages.Add(Utils.Color.White("No Result"));
+            messages.Add($Plugin.getTranslation("============ Siege List [{page+1}/{maxPage}] ============"));
+            if (List.Count() == 0) messages.Add(Utils.Color.White(Plugin.getTranslation("No Result")));
             else
             {
                 foreach (var result in List)
@@ -416,12 +416,12 @@ namespace RPGMods.Systems
                     string PlayerName = Utils.Color.Teal(Cache.SteamPlayerCache[result.Key].CharacterName.ToString());
                     TimeSpan span = result.Value.SiegeEndTime - DateTime.Now;
                     var hSpan = Math.Round(span.TotalHours, 2);
-                    string tempDisplay = "[Duration " + hSpan + " hour(s)]";
+                    string tempDisplay = Plugin.getTranslation("[Duration ") + hSpan + Plugin.getTranslation(" hour(s)]");
                     string DisplayStats = Utils.Color.White(tempDisplay);
-                    messages.Add($"{order}. {PlayerName} : {DisplayStats}");
+                    messages.Add($Plugin.getTranslation("{order}. {PlayerName} : {DisplayStats}"));
                 }
             }
-            messages.Add($"============ Siege List [{page+1}/{maxPage}] ============");
+            messages.Add($Plugin.getTranslation("============ Siege List [{page+1}/{maxPage}] ============"));
 
             TaskRunner.Start(taskWorld =>
             {
@@ -495,8 +495,8 @@ namespace RPGMods.Systems
                 Cache.OffenseLog[KillerSteamID] = OffenseData;
 
                 if (isAnnounceGrief) ServerChatUtils.SendSystemMessageToAllClients(Plugin.Server.EntityManager, $"" +
-                    $"Vampire {Color.Red(killerUserData.CharacterName.ToString())} (Lv.{KillerLevel}) " +
-                    $"grief-killed \"{Color.White(victimUserData.CharacterName.ToString())}\" (Lv.{VictimLevel})");
+                    $Plugin.getTranslation("Vampire {Color.Red(killerUserData.CharacterName.ToString())} (Lv.{KillerLevel}) ") +
+                    $Plugin.getTranslation("grief-killed \"){Color.White(victimUserData.CharacterName.ToString())}\Plugin.getTranslation(" (Lv.{VictimLevel})"));
 
                 if (OffenseData.Offense >= OffenseLimit)
                 {
@@ -594,54 +594,54 @@ namespace RPGMods.Systems
             switch (honorPoint)
             {
                 case >= 10000:
-                    rankInfo.Title = "Glorious";
+                    rankInfo.Title = Plugin.getTranslation("Glorious");
                     rankInfo.HonorRank = 10;
                     rankInfo.Rewards = -1000;
                     break;
                 case >= 5000:
-                    rankInfo.Title = "Noble";
+                    rankInfo.Title = Plugin.getTranslation("Noble");
                     rankInfo.HonorRank = 9;
                     rankInfo.Rewards = -500;
                     break;
                 case >= 1500:
-                    rankInfo.Title = "Virtuous";
+                    rankInfo.Title = Plugin.getTranslation("Virtuous");
                     rankInfo.HonorRank = 8;
                     rankInfo.Rewards = -150;
                     break;
                 case >= 500:
-                    rankInfo.Title = "Reputable";
+                    rankInfo.Title = Plugin.getTranslation("Reputable");
                     rankInfo.HonorRank = 7;
                     rankInfo.Rewards = -50;
                     break;
                 case >= 0:
                 default:
-                    rankInfo.Title = "Neutral";
+                    rankInfo.Title = Plugin.getTranslation("Neutral");
                     rankInfo.HonorRank = 6;
                     rankInfo.Rewards = -25;
                     break;
                 case <= -20000:
-                    rankInfo.Title = "Dreaded";
+                    rankInfo.Title = Plugin.getTranslation("Dreaded");
                     rankInfo.HonorRank = 5;
                     rankInfo.Rewards = 10;
                     rankInfo.Rewards = 150;
                     break;
                 case <= -10000:
-                    rankInfo.Title = "Nefarious";
+                    rankInfo.Title = Plugin.getTranslation("Nefarious");
                     rankInfo.HonorRank = 4;
                     rankInfo.Rewards = 100;
                     break;
                 case <= -3000:
-                    rankInfo.Title = "Villainous";
+                    rankInfo.Title = Plugin.getTranslation("Villainous");
                     rankInfo.HonorRank = 3;
                     rankInfo.Rewards = 50;
                     break;
                 case <= -1000:
-                    rankInfo.Title = "Infamous";
+                    rankInfo.Title = Plugin.getTranslation("Infamous");
                     rankInfo.HonorRank = 2;
                     rankInfo.Rewards = 10;
                     break;
                 case < 0:
-                    rankInfo.Title = "Suspicious";
+                    rankInfo.Title = Plugin.getTranslation("Suspicious");
                     rankInfo.HonorRank = 1;
                     rankInfo.Rewards = 0;
                     break;
@@ -694,13 +694,13 @@ namespace RPGMods.Systems
                 myRank += 1;
                 if (pair.Key == ctx.Event.User.PlatformId)
                 {
-                    messages.Add(Utils.Color.Green($"You're rank number #{myRank}!"));
+                    messages.Add(Utils.Color.Green($Plugin.getTranslation("You're rank number #{myRank}!")));
                     break;
                 }
             }
 
-            messages.Add($"============ Leaderboard ============");
-            if (List.Count() == 0) messages.Add(Utils.Color.White("No Result"));
+            messages.Add($Plugin.getTranslation("============ Leaderboard ============"));
+            if (List.Count() == 0) messages.Add(Utils.Color.White(Plugin.getTranslation("No Result")));
             else
             {
                 int i = 0;
@@ -708,16 +708,16 @@ namespace RPGMods.Systems
                 {
                     i++;
                     string PlayerName = Utils.Color.Teal(result.Value.PlayerName);
-                    string tempDisplay = "[K/D " + result.Value.KD.ToString() + "]";
+                    string tempDisplay = Plugin.getTranslation("[K/D ") + result.Value.KD.ToString() + Plugin.getTranslation("]");
                     if (isHonorSystemEnabled)
                     {
-                        tempDisplay += " [REP " + result.Value.Reputation.ToString() + "]";
+                        tempDisplay += Plugin.getTranslation(" [REP ") + result.Value.Reputation.ToString() + Plugin.getTranslation("]");
                     }
                     string DisplayStats = Utils.Color.White(tempDisplay);
-                    messages.Add($"{i}. {PlayerName} : {DisplayStats}");
+                    messages.Add($Plugin.getTranslation("{i}. {PlayerName} : {DisplayStats}"));
                 }
             }
-            messages.Add($"============ Leaderboard ============");
+            messages.Add($Plugin.getTranslation("============ Leaderboard ============"));
 
             TaskRunner.Start(taskWorld =>
             {
@@ -748,12 +748,12 @@ namespace RPGMods.Systems
             try
             {
                 Database.PvPStats = JsonSerializer.Deserialize<ConcurrentDictionary<ulong, PvPData>>(content);
-                Plugin.Logger.LogWarning("PvPStats DB Populated.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("PvPStats DB Populated."));
             }
             catch
             {
                 Database.PvPStats = new ConcurrentDictionary<ulong, PvPData>();
-                Plugin.Logger.LogWarning("PvPStats DB Created.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("PvPStats DB Created."));
             }
 
             //-- Siege Mechanic
@@ -766,12 +766,12 @@ namespace RPGMods.Systems
             try
             {
                 Database.SiegeState = JsonSerializer.Deserialize<Dictionary<ulong, SiegeData>>(content);
-                Plugin.Logger.LogWarning("SiegeStates DB Populated.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("SiegeStates DB Populated."));
             }
             catch
             {
                 Database.SiegeState = new Dictionary<ulong, SiegeData>();
-                Plugin.Logger.LogWarning("SiegeStates DB Created.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("SiegeStates DB Created."));
             }
 
             //-- Transfer OLD Stats to new database.
@@ -787,8 +787,8 @@ namespace RPGMods.Systems
                         data.Kills = item.Value;
                         Database.PvPStats[item.Key] = data;
                     }
-                    Plugin.Logger.LogWarning("PvPKills DB Transfered.");
-                    File.Delete("BepInEx/config/RPGMods/Saves/pvpkills.json");
+                    Plugin.Logger.LogWarning(Plugin.getTranslation("PvPKills DB Transfered."));
+                    File.Delete(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/pvpkills.json"));
                 }
                 catch { }
             }
@@ -805,8 +805,8 @@ namespace RPGMods.Systems
                         data.Deaths = item.Value;
                         Database.PvPStats[item.Key] = data;
                     }
-                    Plugin.Logger.LogWarning("PvPDeath DB Transfered.");
-                    File.Delete("BepInEx/config/RPGMods/Saves/pvpdeath.json");
+                    Plugin.Logger.LogWarning(Plugin.getTranslation("PvPDeath DB Transfered."));
+                    File.Delete(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/pvpdeath.json"));
                 }
                 catch { }
             }
@@ -824,8 +824,8 @@ namespace RPGMods.Systems
                         data.KD = Math.Round(item.Value, 2);
                         Database.PvPStats[item.Key] = data;
                     }
-                    Plugin.Logger.LogWarning("PvPKD DB Transfered.");
-                    File.Delete("BepInEx/config/RPGMods/Saves/pvpkd.json");
+                    Plugin.Logger.LogWarning(Plugin.getTranslation("PvPKD DB Transfered."));
+                    File.Delete(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/pvpkd.json"));
                 }
                 catch { }
             }

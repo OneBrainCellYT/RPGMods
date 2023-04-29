@@ -57,7 +57,7 @@ namespace RPGMods.Utils
                     }
                     catch
                     {
-                        if (prioritytask.GetResult) TaskResults.Add(prioritytask.TaskId, new RisingTaskResult { Result = "Error" });
+                        if (prioritytask.GetResult) TaskResults.Add(prioritytask.TaskId, new RisingTaskResult { Result = Plugin.getTranslation("Error") });
                         continue;
                     }
 
@@ -86,7 +86,7 @@ namespace RPGMods.Utils
             }
             catch
             {
-                if (task.GetResult) TaskResults.Add(task.TaskId, new RisingTaskResult { Result = "Error" });
+                if (task.GetResult) TaskResults.Add(task.TaskId, new RisingTaskResult { Result = Plugin.getTranslation("Error") });
                 return;
             }
 

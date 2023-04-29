@@ -25,7 +25,7 @@ namespace RPGMods.Utils
         public static ServerGameManager SGM = default;
         public static UserActivityGridSystem UAGS = default;
 
-        public static Regex rxName = new Regex(@"(?<=\])[^\[].*");
+        public static Regex rxName = new Regex(@Plugin.getTranslation("(?<=\])[^\[].*"));
 
 
         public static bool GetUserActivityGridSystem(out UserActivityGridSystem uags)
@@ -147,7 +147,7 @@ namespace RPGMods.Utils
                 }
             }
 
-            Plugin.Logger.LogWarning("Player Cache Created.");
+            Plugin.Logger.LogWarning(Plugin.getTranslation("Player Cache Created."));
         }
 
         public static void UpdatePlayerCache(Entity userEntity, string oldName, string newName, bool forceOffline = false)
@@ -177,11 +177,11 @@ namespace RPGMods.Utils
 
                 if (Database.PvPStats.TryGetValue(userData.PlatformId, out var PvPData))
                 {
-                    vampire_name = "[" + PvPSystem.GetHonorTitle(PvPData.Reputation).Title + "]" + vampire_name;
+                    vampire_name = Plugin.getTranslation("[") + PvPSystem.GetHonorTitle(PvPData.Reputation).Title + Plugin.getTranslation("]") + vampire_name;
                 }
                 else
                 {
-                    vampire_name = "[" + PvPSystem.GetHonorTitle(0).Title + "]" + vampire_name;
+                    vampire_name = Plugin.getTranslation("[") + PvPSystem.GetHonorTitle(0).Title + Plugin.getTranslation("]") + vampire_name;
                 }
                 newName = vampire_name;
             }
@@ -205,7 +205,7 @@ namespace RPGMods.Utils
 
         public static bool ValidateName(string name, out CreateCharacterFailureReason invalidReason)
         {
-            if (Regex.IsMatch(name, @"[^a-zA-Z0-9]"))
+            if (Regex.IsMatch(name, @Plugin.getTranslation("[^a-zA-Z0-9]")))
             {
                 invalidReason = CreateCharacterFailureReason.InvalidName;
                 return false;
@@ -284,7 +284,7 @@ namespace RPGMods.Utils
                 try
                 {
                     var item = managed.GetOrDefault<ManagedItemData>(entry.Key);
-                    if (item.PrefabName.StartsWith("Item_VBloodSource") || item.PrefabName.StartsWith("GM_Unit_Creature_Base") || item.PrefabName == "Item_Cloak_ShadowPriest") continue;
+                    if (item.PrefabName.StartsWith(Plugin.getTranslation("Item_VBloodSource")) || item.PrefabName.StartsWith(Plugin.getTranslation("GM_Unit_Creature_Base")) || item.PrefabName == Plugin.getTranslation("Item_Cloak_ShadowPriest")) continue;
                     if (item.Name.ToString().ToLower() == name.ToLower())
                     {
                         return entry.Key;
@@ -359,12 +359,12 @@ namespace RPGMods.Utils
         {
             PrefabGUID type;
             name = name.ToLower();
-            if (name.Equals("brute")) type = new PrefabGUID(-1464869978);
-            else if (name.Equals("warrior")) type = new PrefabGUID(-1128238456);
-            else if (name.Equals("rogue")) type = new PrefabGUID(-1030822544);
-            else if (name.Equals("scholar")) type = new PrefabGUID(-700632469);
-            else if (name.Equals("creature")) type = new PrefabGUID(1897056612);
-            else if (name.Equals("worker")) type = new PrefabGUID(-1342764880);
+            if (name.Equals(Plugin.getTranslation("brute"))) type = new PrefabGUID(-1464869978);
+            else if (name.Equals(Plugin.getTranslation("warrior"))) type = new PrefabGUID(-1128238456);
+            else if (name.Equals(Plugin.getTranslation("rogue"))) type = new PrefabGUID(-1030822544);
+            else if (name.Equals(Plugin.getTranslation("scholar"))) type = new PrefabGUID(-700632469);
+            else if (name.Equals(Plugin.getTranslation("creature"))) type = new PrefabGUID(1897056612);
+            else if (name.Equals(Plugin.getTranslation("worker"))) type = new PrefabGUID(-1342764880);
             else type = new PrefabGUID();
             return type;
         }
@@ -539,7 +539,7 @@ namespace RPGMods.Utils
         public static string GetPrefabName(PrefabGUID hashCode)
         {
             var s = Plugin.Server.GetExistingSystem<PrefabCollectionSystem>();
-            string name = "Nonexistent";
+            string name = Plugin.getTranslation("Nonexistent");
             if (hashCode.GuidHash == 0)
             {
                 return name;
@@ -550,7 +550,7 @@ namespace RPGMods.Utils
             }
             catch
             {
-                name = "NoPrefabName";
+                name = Plugin.getTranslation("NoPrefabName");
             }
             return name;
         }
@@ -594,113 +594,113 @@ namespace RPGMods.Utils
 
         public static String statTypeToString(UnitStatType type)
         {
-            String name = "Unknown";
+            String name = Plugin.getTranslation("Unknown");
             if (type == UnitStatType.PhysicalPower)
-                name = "Physical Power";
+                name = Plugin.getTranslation("Physical Power");
             if (type == UnitStatType.ResourcePower)
-                name = "Resource Power";
+                name = Plugin.getTranslation("Resource Power");
             if (type == UnitStatType.SiegePower)
-                name = "Siege Power";
+                name = Plugin.getTranslation("Siege Power");
             if (type == UnitStatType.ResourceYield)
-                name = "Resource Yield";
+                name = Plugin.getTranslation("Resource Yield");
             if (type == UnitStatType.MaxHealth)
-                name = "Max Health";
+                name = Plugin.getTranslation("Max Health");
             if (type == UnitStatType.MovementSpeed)
-                name = "MovementSpeed";
+                name = Plugin.getTranslation("MovementSpeed");
             if (type == UnitStatType.CooldownModifier)
-                name = "CooldownModifier";
+                name = Plugin.getTranslation("CooldownModifier");
             if (type == UnitStatType.PhysicalResistance)
-                name = "PhysicalResistance";
+                name = Plugin.getTranslation("PhysicalResistance");
             if (type == UnitStatType.FireResistance)
-                name = "FireResistance";
+                name = Plugin.getTranslation("FireResistance");
             if (type == UnitStatType.HolyResistance)
-                name = "HolyResistance";
+                name = Plugin.getTranslation("HolyResistance");
             if (type == UnitStatType.SilverResistance)
-                name = "SilverResistance";
+                name = Plugin.getTranslation("SilverResistance");
             if (type == UnitStatType.SunChargeTime)
-                name = "SunChargeTime";
+                name = Plugin.getTranslation("SunChargeTime");
             if (type == UnitStatType.EnergyGain)
-                name = "EnergyGain";
+                name = Plugin.getTranslation("EnergyGain");
             if (type == UnitStatType.MaxEnergy)
-                name = "MaxEnergy";
+                name = Plugin.getTranslation("MaxEnergy");
             if (type == UnitStatType.SunResistance)
-                name = "SunResistance";
+                name = Plugin.getTranslation("SunResistance");
             if (type == UnitStatType.GarlicResistance)
-                name = "GarlicResistance";
+                name = Plugin.getTranslation("GarlicResistance");
             if (type == UnitStatType.Vision)
-                name = "Vision";
+                name = Plugin.getTranslation("Vision");
             if (type == UnitStatType.SpellResistance)
-                name = "SpellResistance";
+                name = Plugin.getTranslation("SpellResistance");
             if (type == UnitStatType.Radial_SpellResistance)
-                name = "Radial_SpellResistance";
+                name = Plugin.getTranslation("Radial_SpellResistance");
             if (type == UnitStatType.SpellPower)
-                name = "SpellPower";
+                name = Plugin.getTranslation("SpellPower");
             if (type == UnitStatType.PassiveHealthRegen)
-                name = "PassiveHealthRegen";
+                name = Plugin.getTranslation("PassiveHealthRegen");
             if (type == UnitStatType.PhysicalLifeLeech)
-                name = "PhysicalLifeLeech";
+                name = Plugin.getTranslation("PhysicalLifeLeech");
             if (type == UnitStatType.SpellLifeLeech)
-                name = "SpellLifeLeech";
+                name = Plugin.getTranslation("SpellLifeLeech");
             if (type == UnitStatType.PhysicalCriticalStrikeChance)
-                name = "PhysicalCriticalStrikeChance";
+                name = Plugin.getTranslation("PhysicalCriticalStrikeChance");
             if (type == UnitStatType.PhysicalCriticalStrikeDamage)
-                name = "PhysicalCriticalStrikeDamage";
+                name = Plugin.getTranslation("PhysicalCriticalStrikeDamage");
             if (type == UnitStatType.SpellCriticalStrikeChance)
-                name = "SpellCriticalStrikeChance";
+                name = Plugin.getTranslation("SpellCriticalStrikeChance");
             if (type == UnitStatType.SpellCriticalStrikeDamage)
-                name = "SpellCriticalStrikeDamage";
+                name = Plugin.getTranslation("SpellCriticalStrikeDamage");
             if (type == UnitStatType.AttackSpeed)
-                name = "AttackSpeed";
+                name = Plugin.getTranslation("AttackSpeed");
             if (type == UnitStatType.DamageVsUndeads)
-                name = "DamageVsUndead";
+                name = Plugin.getTranslation("DamageVsUndead");
             if (type == UnitStatType.DamageVsHumans)
-                name = "DamageVsHumans";
+                name = Plugin.getTranslation("DamageVsHumans");
             if (type == UnitStatType.DamageVsDemons)
-                name = "DamageVsDemons";
+                name = Plugin.getTranslation("DamageVsDemons");
             if (type == UnitStatType.DamageVsMechanical)
-                name = "DamageVsMechanical";
+                name = Plugin.getTranslation("DamageVsMechanical");
             if (type == UnitStatType.DamageVsBeasts)
-                name = "DamageVsBeasts";
+                name = Plugin.getTranslation("DamageVsBeasts");
             if (type == UnitStatType.DamageVsCastleObjects)
-                name = "DamageVsCastleObjects";
+                name = Plugin.getTranslation("DamageVsCastleObjects");
             if (type == UnitStatType.DamageVsPlayerVampires)
-                name = "DamageVsPlayerVampires";
+                name = Plugin.getTranslation("DamageVsPlayerVampires");
             if (type == UnitStatType.ResistVsUndeads)
-                name = "ResistVsUndead";
+                name = Plugin.getTranslation("ResistVsUndead");
             if (type == UnitStatType.ResistVsHumans)
-                name = "ResistVsHumans";
+                name = Plugin.getTranslation("ResistVsHumans");
             if (type == UnitStatType.ResistVsDemons)
-                name = "ResistVsDemons";
+                name = Plugin.getTranslation("ResistVsDemons");
             if (type == UnitStatType.ResistVsMechanical)
-                name = "ResistVsMechanical";
+                name = Plugin.getTranslation("ResistVsMechanical");
             if (type == UnitStatType.ResistVsBeasts)
-                name = "ResistVsBeasts";
+                name = Plugin.getTranslation("ResistVsBeasts");
             if (type == UnitStatType.ResistVsCastleObjects)
-                name = "ResistVsCastleObjects";
+                name = Plugin.getTranslation("ResistVsCastleObjects");
             if (type == UnitStatType.ResistVsPlayerVampires)
-                name = "ResistVsPlayerVampires";
+                name = Plugin.getTranslation("ResistVsPlayerVampires");
             if (type == UnitStatType.DamageVsWood)
-                name = "DamageVsWood";
+                name = Plugin.getTranslation("DamageVsWood");
             if (type == UnitStatType.DamageVsMineral)
-                name = "DamageVsMineral";
+                name = Plugin.getTranslation("DamageVsMineral");
             if (type == UnitStatType.DamageVsVegetation)
-                name = "DamageVsVegetation";
+                name = Plugin.getTranslation("DamageVsVegetation");
             if (type == UnitStatType.DamageVsLightArmor)
-                name = "DamageVsLightArmor";
+                name = Plugin.getTranslation("DamageVsLightArmor");
             if (type == UnitStatType.DamageVsHeavyArmor)
-                name = "DamageVsHeavyArmor";
+                name = Plugin.getTranslation("DamageVsHeavyArmor");
             if (type == UnitStatType.DamageVsMagic)
-                name = "DamageVsMagic";
+                name = Plugin.getTranslation("DamageVsMagic");
             if (type == UnitStatType.ReducedResourceDurabilityLoss)
-                name = "ReducedResourceDurabilityLoss";
+                name = Plugin.getTranslation("ReducedResourceDurabilityLoss");
             if (type == UnitStatType.PrimaryAttackSpeed)
-                name = "PrimaryAttackSpeed";
+                name = Plugin.getTranslation("PrimaryAttackSpeed");
             if (type == UnitStatType.ImmuneToHazards)
-                name = "ImmuneToHazards";
+                name = Plugin.getTranslation("ImmuneToHazards");
             if (type == UnitStatType.PrimaryLifeLeech)
-                name = "PrimaryLifeLeech";
+                name = Plugin.getTranslation("PrimaryLifeLeech");
             if (type == UnitStatType.HealthRecovery)
-                name = "HealthRecovery";
+                name = Plugin.getTranslation("HealthRecovery");
             return name;
         }
     }

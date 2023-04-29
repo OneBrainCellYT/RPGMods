@@ -6,7 +6,7 @@ using System;
 
 namespace RPGMods.Commands
 {
-    [Command("ban", Usage = "ban <playername> <days> <reason>", Description = "Check the status of specified player, or ban them. 0 is permanent.")]
+    [Command(Plugin.getTranslation("ban"), Usage = Plugin.getTranslation("ban <playername> <days> <reason>"), Description = Plugin.getTranslation("Check the status of specified player, or ban them. 0 is permanent."))]
     public static class BanUser
     {
         public static void Initialize(Context ctx)
@@ -21,21 +21,21 @@ namespace RPGMods.Commands
                     if (BanSystem.IsUserBanned(targetData_.PlatformId, out var banData_))
                     {
                         TimeSpan duration = banData_.BanUntil - DateTime.Now;
-                        Output.SendSystemMessage(ctx, $"Player:<color=#fffffffe> {args[0]}</color>");
-                        Output.SendSystemMessage(ctx, $"Status:<color=#fffffffe> Banned</color> | By:<color=#fffffffe> {banData_.BannedBy}</color>");
-                        Output.SendSystemMessage(ctx, $"Duration:<color=#fffffffe> {Math.Round(duration.TotalDays)}</color> day(s) [<color=#fffffffe>{banData_.BanUntil}</color>]");
-                        Output.SendSystemMessage(ctx, $"Reason:<color=#fffffffe> {banData_.Reason}</color>");
+                        Output.SendSystemMessage(ctx, Plugin.getTranslation("Player:<color=#fffffffe> ")+args[0]+Plugin.getTranslation("</color>")); ;
+                        Output.SendSystemMessage(ctx, Plugin.getTranslation("Status:<color=#fffffffe> Banned</color> | By:<color=#fffffffe> ")+banData_.BannedBy+Plugin.getTranslation("</color>"));
+                        Output.SendSystemMessage(ctx, Plugin.getTranslation("Duration:<color=#fffffffe> ")+Math.Round(duration.TotalDays)+Plugin.getTranslation("</color> day(s) [<color=#fffffffe>")+banData_.BanUntil+Plugin.getTranslation("</color>]"));
+                        Output.SendSystemMessage(ctx, Plugin.getTranslation("Reason:<color=#fffffffe> ")+banData_.Reason+Plugin.getTranslation("</color>"));
                         return;
                     }
                     else
                     {
-                        Output.CustomErrorMessage(ctx, "Specified user is not banned.");
+                        Output.CustomErrorMessage(ctx, Plugin.getTranslation("Specified user is not banned."));
                         return;
                     }
                 }
                 else
                 {
-                    Output.CustomErrorMessage(ctx, "Unable to find the specified player.");
+                    Output.CustomErrorMessage(ctx, Plugin.getTranslation("Unable to find the specified player."));
                     return;
                 }
             }
@@ -56,7 +56,7 @@ namespace RPGMods.Commands
             var reason = string.Join(' ', args.Skip(2));
             if (reason.Length > 150)
             {
-                Output.CustomErrorMessage(ctx, "Keep the reason short will ya?!");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Keep the reason short will ya?!"));
                 return;
             }
 
@@ -66,20 +66,20 @@ namespace RPGMods.Commands
                 {
                     var user = ctx.Event.User;
                     Helper.KickPlayer(targetUserEntity);
-                    Output.SendSystemMessage(ctx, $"Player \"{name}\" is now banned.");
-                    Output.SendSystemMessage(ctx, $"Banned Until:<color=#fffffffe> {banData.BanUntil}</color>");
-                    Output.SendSystemMessage(ctx, $"Reason:<color=#fffffffe> {reason}</color>");
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("Player \"")+name+Plugin.getTranslation("\" is now banned."));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("Banned Until:<color=#fffffffe> ")+banData.BanUntil+Plugin.getTranslation("</color>"));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("Reason:<color=#fffffffe> ")+reason+Plugin.getTranslation("</color>"));
                     return;
                 }
                 else
                 {
-                    Output.CustomErrorMessage(ctx, $"Failed to ban \"{name}\".");
+                    Output.CustomErrorMessage(ctx, Plugin.getTranslation("Failed to ban \")")+name+Plugin.getTranslation("\"."));
                     return;
                 }
             }
             else
             {
-                Output.CustomErrorMessage(ctx, "Specified player not found.");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Specified player not found."));
                 return;
             }
         }
@@ -101,18 +101,18 @@ namespace RPGMods.Commands
             {
                 if (BanSystem.UnbanUser(targetUserEntity))
                 {
-                    Output.SendSystemMessage(ctx, $"Player \"{args[0]}\" is no longer banned.");
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("Player \"")+args[0]+Plugin.getTranslation("\" is no longer banned."));
                     return;
                 }
                 else
                 {
-                    Output.CustomErrorMessage(ctx, $"Specified player does not exist in the ban database.");
+                    Output.CustomErrorMessage(ctx,Plugin.getTranslation("Specified player does not exist in the ban database."));
                     return;
                 }
             }
             else
             {
-                Output.CustomErrorMessage(ctx, "Specified player not found.");
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Specified player not found."));
                 return;
             }
         }

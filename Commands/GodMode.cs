@@ -15,8 +15,8 @@ namespace RPGMods.Commands
             if (isGodMode) isGodMode = false;
             else isGodMode = true;
             UpdateGodMode(ctx, isGodMode);
-            string s = isGodMode ? "Activated" : "Deactivated";
-            Output.SendSystemMessage(ctx, $"God mode <color=#ffff00>{s}</color>");
+            string s = isGodMode ? Plugin.getTranslation("Activated") : Plugin.getTranslation("Deactivated");
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("God mode <color=#ffff00>")+s + Plugin.getTranslation("</color>"));
             Helper.ApplyBuff(ctx.Event.SenderUserEntity, ctx.Event.SenderCharacterEntity, Database.Buff.Buff_VBlood_Perk_Moose);
         }
 
@@ -56,12 +56,12 @@ namespace RPGMods.Commands
             try
             {
                 Database.godmode = JsonSerializer.Deserialize<Dictionary<ulong, bool>>(json);
-                Plugin.Logger.LogWarning("GodMode DB Populated.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("GodMode DB Populated."));
             }
             catch
             {
                 Database.godmode = new Dictionary<ulong, bool>();
-                Plugin.Logger.LogWarning("GodMode DB Created.");
+                Plugin.Logger.LogWarning(Plugin.getTranslation("GodMode DB Created."));
             }
         }
     }

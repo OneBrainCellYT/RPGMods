@@ -33,7 +33,7 @@ namespace RPGMods.Commands
                         Source = type
                     };
                     Plugin.Server.GetExistingSystem<DebugEventsSystem>().ChangeBloodEvent(ctx.Event.User.Index, ref BloodEvent);
-                    Output.SendSystemMessage(ctx, $"Changed Blood Type to <color=#ffff00>{ctx.Args[0]}</color> with <color=#ffff00>{quality}</color>% quality");
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("Changed Blood Type to <color=#ffff00>")+ctx.Args[0]+Plugin.getTranslation("</color> with <color=#ffff00>")+quality + Plugin.getTranslation("</color>% quality"));
                 }
                 catch
                 {
