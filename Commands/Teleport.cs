@@ -6,7 +6,7 @@ using Unity.Transforms;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("teleport, tp"), Plugin.getTranslation("teleport <Name>"), Plugin.getTranslation("Teleport you to another online player within your clan."))]
+    [Command(("teleport, tp"), ("teleport <Name>"), ("Teleport you to another online player within your clan."))]
     public static class Teleport
     {
         public static void Initialize(Context ctx)
@@ -53,7 +53,7 @@ namespace RPGMods.Commands
 
             if (Helper.IsPlayerInCombat(TargetChar))
             {
-                Output.CustomErrorMessage(ctx, $Plugin.getTranslation("Unable to teleport! Player \"){TargetName}\Plugin.getTranslation(" is in combat!"));
+                Output.CustomErrorMessage(ctx, Plugin.getTranslation("Unable to teleport! Player \"")+TargetName+Plugin.getTranslation("\" is in combat!"));
                 return;
             }
 

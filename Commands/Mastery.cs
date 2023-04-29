@@ -6,7 +6,7 @@ using Unity.Entities;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("mastery, m"), Usage = Plugin.getTranslation("mastery [<log> <on>|<off>] [<reset> all|(mastery type)]"), Description = Plugin.getTranslation("Display your current mastery progression, toggle the gain notification, or reset your mastery to gain effectiveness."))]
+    [Command(("mastery, m"), Usage = ("mastery [<log> <on>|<off>] [<reset> all|(mastery type)]"), Description = ("Display your current mastery progression, toggle the gain notification, or reset your mastery to gain effectiveness."))]
     public static class Mastery
     {
         private static EntityManager entityManager = Plugin.Server.EntityManager;

@@ -6,7 +6,7 @@ using Unity.Transforms;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("playerinfo, i"), Usage = Plugin.getTranslation("playerinfo <Name>"), Description = Plugin.getTranslation("Display the player information details."))]
+    [Command(("playerinfo, i"), Usage = ("playerinfo <Name>"), Description = ("Display the player information details."))]
     public static class PlayerInfo
     {
         public static void Initialize(Context ctx)
@@ -35,19 +35,19 @@ namespace RPGMods.Commands
             Database.PvPStats.TryGetValue(SteamID, out var pvpStats);
             Database.player_experience.TryGetValue(SteamID, out var exp);
 
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Name: {Color.White(Name)}"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("SteamID: {Color.White(SteamID.ToString())}"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Latency: {Color.White(ping.ToString())}s"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("-- Position --"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("X: {Color.White(Math.Round(position.x,2).ToString())} ") +
-                $Plugin.getTranslation("Y: {Color.White(Math.Round(position.y,2).ToString())} ") +
-                $Plugin.getTranslation("Z: {Color.White(Math.Round(position.z,2).ToString())}"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("-- {Color.White(")EntitiesPlugin.getTranslation(")} --"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Char Entity: {Color.White(CharacterEntity)}"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("User Entity: {Color.White(UserEntity)}"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("-- {Color.White(")ExperiencePlugin.getTranslation(")} --"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Level: {Color.White(ExperienceSystem.convertXpToLevel(exp).ToString())} [{Color.White(exp.ToString())}]"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("-- {Color.White(")PvP StatsPlugin.getTranslation(")} --"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("Name: ")+Color.White(Name));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("SteamID: ")+Color.White(SteamID.ToString())+ Plugin.getTranslation(""));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("Latency: ")+Color.White(ping.ToString()));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("-- Position --"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("X: ")+Color.White(Math.Round(position.x,2).ToString())+ Plugin.getTranslation(" ") +
+                Plugin.getTranslation("Y: ")+Color.White(Math.Round(position.y,2).ToString())+ Plugin.getTranslation(" ") +
+                Plugin.getTranslation("Z: ")+Color.White(Math.Round(position.z,2).ToString())+ Plugin.getTranslation(""));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("-- ")+Color.White(")EntitiesPlugin.getTranslation(")+ Plugin.getTranslation(" --"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("Char Entity: ")+Color.White(CharacterEntity)+ Plugin.getTranslation(""));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("User Entity: ")+Color.White(UserEntity)+ Plugin.getTranslation(""));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("-- ")+Color.White(")ExperiencePlugin.getTranslation(")+ Plugin.getTranslation(" --"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("Level: ")+Color.White(ExperienceSystem.convertXpToLevel(exp).ToString())+ Plugin.getTranslation(" [")+Color.White(exp.ToString())+ Plugin.getTranslation("]"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("-- ")+Color.White(")PvP StatsPlugin.getTranslation(")+ Plugin.getTranslation(" --"));
 
             if (PvPSystem.isHonorSystemEnabled)
             {
@@ -64,19 +64,19 @@ namespace RPGMods.Commands
                 string hostilityText = hostilityState.IsHostile ? Plugin.getTranslation("Aggresive") : Plugin.getTranslation("Passive");
                 string siegeText = siegeState.IsSiegeOn ? Plugin.getTranslation("Sieging") : Plugin.getTranslation("Defensive");
 
-                Output.SendSystemMessage(ctx, $Plugin.getTranslation("Reputation: {Color.White(pvpStats.Reputation.ToString())}"));
-                Output.SendSystemMessage(ctx, $Plugin.getTranslation("Hostility: {Color.White(hostilityText)}"));
-                Output.SendSystemMessage(ctx, $Plugin.getTranslation("Siege: {Color.White(siegeText)}"));
-                Output.SendSystemMessage(ctx, $Plugin.getTranslation("-- Time Left: {Color.White(tLeft.ToString())} hour(s)"));
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Reputation: {Color.White(pvpStats.Reputation.ToString())}"));
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Hostility: ")+Color.White(hostilityText)+ Plugin.getTranslation(""));
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("Siege: ")+Color.White(siegeText)+ Plugin.getTranslation(""));
+                Output.SendSystemMessage(ctx, Plugin.getTranslation("-- Time Left: ")+Color.White(tLeft.ToString())+ Plugin.getTranslation(" hour(s)"));
             }
 
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("K/D: {Color.White(pvpStats.KD.ToString())} ") +
-                $Plugin.getTranslation("Kill: {Color.White(pvpStats.Kills.ToString())} ") +
-                $Plugin.getTranslation("Death: {Color.White(pvpStats.Deaths.ToString())}"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("K/D: ")+Color.White(pvpStats.KD.ToString())+ Plugin.getTranslation(" ") +
+                Plugin.getTranslation("Kill: ")+Color.White(pvpStats.Kills.ToString())+ Plugin.getTranslation(" ") +
+                Plugin.getTranslation("Death: ")+Color.White(pvpStats.Deaths.ToString())+ Plugin.getTranslation(""));
         }
     }
 
-    [Command(Plugin.getTranslation("myinfo, me"), Usage = Plugin.getTranslation("myinfo"), Description = Plugin.getTranslation("Display your information details."))]
+    [Command(("myinfo, me"), Usage = ("myinfo"), Description = ("Display your information details."))]
     public static class MyInfo
     {
         public static void Initialize(Context ctx)
@@ -88,16 +88,16 @@ namespace RPGMods.Commands
             var ping = ctx.EntityManager.GetComponentData<Latency>(ctx.Event.SenderCharacterEntity).Value;
             var position = ctx.EntityManager.GetComponentData<Translation>(ctx.Event.SenderCharacterEntity).Value;
 
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Name: {Color.White(Name)}"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("SteamID: {Color.White(SteamID.ToString())}"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Latency: {Color.White(ping.ToString())}s"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("-- Position --"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("X: {Color.White(Math.Round(position.x,2).ToString())} ") +
-                $Plugin.getTranslation("Y: {Color.White(Math.Round(position.y,2).ToString())} ") +
-                $Plugin.getTranslation("Z: {Color.White(Math.Round(position.z,2).ToString())}"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("-- Entities --"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Char Entity: {Color.White(CharacterEntity)}"));
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("User Entity: {Color.White(UserEntity)}"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("Name: ")+Color.White(Name)+ Plugin.getTranslation(""));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("SteamID: ")+Color.White(SteamID.ToString())+ Plugin.getTranslation(""));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("Latency: ")+Color.White(ping.ToString())+ Plugin.getTranslation("s"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("-- Position --"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("X: ")+Color.White(Math.Round(position.x,2).ToString())+ Plugin.getTranslation(" ") +
+                Plugin.getTranslation("Y: ")+Color.White(Math.Round(position.y,2).ToString())+ Plugin.getTranslation(" ") +
+                Plugin.getTranslation("Z: ")+Color.White(Math.Round(position.z,2).ToString())+ Plugin.getTranslation(""));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("-- Entities --"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("Char Entity: ")+Color.White(CharacterEntity)+ Plugin.getTranslation(""));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("User Entity: ")+Color.White(UserEntity)+ Plugin.getTranslation(""));
         }
     }
 }

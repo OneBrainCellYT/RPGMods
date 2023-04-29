@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("powerup, pu"), Usage = Plugin.getTranslation("pu <player_name> <add>|<remove> <max hp> <p.atk> <s.atk> <p.def> <s.def>"), Description = Plugin.getTranslation("Buff specified player with the specified value."))]
+    [Command(("powerup, pu"), Usage = ("pu <player_name> <add>|<remove> <max hp> <p.atk> <s.atk> <p.def> <s.def>"), Description = ("Buff specified player with the specified value."))]
     public static class PowerUp
     {
         public static void Initialize(Context ctx)
@@ -75,17 +75,17 @@ namespace RPGMods.Commands
 
         public static void SavePowerUp()
         {
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/powerup.json"), JsonSerializer.Serialize(Database.PowerUpList, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/powerup.json", JsonSerializer.Serialize(Database.PowerUpList, Database.JSON_options));
         }
 
         public static void LoadPowerUp()
         {
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/powerup.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/powerup.json"))
             {
-                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/powerup.json"));
+                var stream = File.Create("BepInEx/config/RPGMods/Saves/powerup.json");
                 stream.Dispose();
             }
-            string content = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/powerup.json"));
+            string content = File.ReadAllText("BepInEx/config/RPGMods/Saves/powerup.json");
             try
             {
                 Database.PowerUpList = JsonSerializer.Deserialize<Dictionary<ulong, PowerUpData>>(content);

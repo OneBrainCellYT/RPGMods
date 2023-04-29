@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("permission, perm"), Usage = Plugin.getTranslation("permission <list>|<save>|<reload>|<set> <0-100> <playername>|<steamid>"), Description = Plugin.getTranslation("Manage commands and user permissions level."))]
+    [Command(("permission, perm"), Usage = ("permission <list>|<save>|<reload>|<set> <0-100> <playername>|<steamid>"), Description = ("Manage commands and user permissions level."))]
     public static class Permission
     {
         public static void Initialize(Context ctx)
@@ -75,7 +75,7 @@ namespace RPGMods.Commands
                     playerName = Helper.GetNameFromSteamID(SteamID);
                     if (playerName == null)
                     {
-                        Output.CustomErrorMessage(ctx, Plugin.getTranslation("Could not find specified player steam id \"")+args[2]+Plugin.getTranslation("\""."));
+                        Output.CustomErrorMessage(ctx, Plugin.getTranslation("Could not find specified player steam id \"")+args[2]+Plugin.getTranslation("\"."));
                         return;
                     }
                 }

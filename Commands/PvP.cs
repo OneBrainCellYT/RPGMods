@@ -7,7 +7,7 @@ using Unity.Entities;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("pvp"), Usage = Plugin.getTranslation("pvp [<on>|<off>|<top>]"), Description = Plugin.getTranslation("Display your PvP statistics or toggle PvP/Castle Siege state"))]
+    [Command(("pvp"), Usage = ("pvp [<on>|<off>|<top>]"), Description = ("Display your PvP statistics or toggle PvP/Castle Siege state"))]
     public static class PvP
     {
         public static void Initialize(Context ctx)

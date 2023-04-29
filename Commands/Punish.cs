@@ -3,7 +3,7 @@ using RPGMods.Utils;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("punish"), Usage = Plugin.getTranslation("punish <playername> [<remove>]"), Description = Plugin.getTranslation("Manually punish someone or lift their debuff."))]
+    [Command(("punish"), Usage = ("punish <playername> [<remove>]"), Description = ("Manually punish someone or lift their debuff."))]
     public static class Punish
     {
         public static void Initialize(Context ctx)
@@ -18,7 +18,7 @@ namespace RPGMods.Commands
                         if (ctx.Args[1].ToLower().Equals(Plugin.getTranslation("remove")))
                         {
                             Helper.RemoveBuff(CharEntity, Database.Buff.Severe_GarlicDebuff);
-                            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Punishment debuff removed from player \"){PlayerName}\"");
+                            Output.SendSystemMessage(ctx, Plugin.getTranslation("Punishment debuff removed from player \"")+PlayerName + Plugin.getTranslation("\""));
                             return;
                         }
                         else
@@ -30,7 +30,7 @@ namespace RPGMods.Commands
                     else
                     {
                         Helper.ApplyBuff(UserEntity, CharEntity, Database.Buff.Severe_GarlicDebuff);
-                        Output.SendSystemMessage(ctx, $Plugin.getTranslation("Applied punishment debuff to player \"){PlayerName}\"");
+                        Output.SendSystemMessage(ctx, Plugin.getTranslation("Applied punishment debuff to player \"")+PlayerName + Plugin.getTranslation("\""));
                         return;
                     }
                 }

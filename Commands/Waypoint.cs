@@ -8,7 +8,7 @@ using Unity.Transforms;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("waypoint, wp"), Plugin.getTranslation("waypoint <Name|Set|Remove|List> [<Name>] [global]"), Plugin.getTranslation("Teleports you to previously created waypoints."))]
+    [Command(("waypoint, wp"), ("waypoint <Name|Set|Remove|List> [<Name>] [global]"), ("Teleports you to previously created waypoints."))]
     public static class Waypoint
     {
         public static int WaypointLimit = 3;
@@ -48,7 +48,7 @@ namespace RPGMods.Commands
                 {
                     if (Database.globalWaypoint.TryGetValue(wp_name, out _))
                     {
-                        Output.CustomErrorMessage(ctx, $Plugin.getTranslation("A global waypoint with the \"){wp_name}\Plugin.getTranslation(" name existed. Please rename your waypoint."));
+                        Output.CustomErrorMessage(ctx, Plugin.getTranslation("A global waypoint with the \"")+wp_name+Plugin.getTranslation("\" name existed. Please rename your waypoint."));
                         return;
                     }
                     if (!global)
@@ -64,7 +64,7 @@ namespace RPGMods.Commands
                         wp_name = wp_name + Plugin.getTranslation("_") +SteamID;
                         if (Database.waypoints.TryGetValue(wp_name, out _))
                         {
-                            Output.CustomErrorMessage(ctx, $Plugin.getTranslation("You already have a waypoint with the same name."));
+                            Output.CustomErrorMessage(ctx, Plugin.getTranslation("You already have a waypoint with the same name."));
                             return;
                         }
                     }
@@ -78,7 +78,7 @@ namespace RPGMods.Commands
                 {
                     if (!Database.globalWaypoint.TryGetValue(wp_name, out _) && global)
                     {
-                        Output.CustomErrorMessage(ctx, $Plugin.getTranslation("Global \"){wp_name}\Plugin.getTranslation(" waypoint not found."));
+                        Output.CustomErrorMessage(ctx, Plugin.getTranslation("Global \"")+wp_name+Plugin.getTranslation("\" waypoint not found."));
                         return;
                     }
                     if (!global)
@@ -86,7 +86,7 @@ namespace RPGMods.Commands
                         wp_name = wp_name + Plugin.getTranslation("_") + SteamID;
                         if (!Database.waypoints.TryGetValue(wp_name, out _))
                         {
-                            Output.CustomErrorMessage(ctx, $Plugin.getTranslation("You do not have any waypoint with this name."));
+                            Output.CustomErrorMessage(ctx, Plugin.getTranslation("You do not have any waypoint with this name."));
                             return;
                         }
                     }
@@ -101,12 +101,12 @@ namespace RPGMods.Commands
                 int total_wp = 0;
                 foreach (var global_wp in Database.globalWaypoint)
                 {
-                    Output.SendSystemMessage(ctx, $Plugin.getTranslation(" - <color=#ffff00>{global_wp.Key}</color> [<color=#00dd00>Global</color>]"));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation(" - <color=#ffff00>")+global_wp.Key+Plugin.getTranslation("</color> [<color=#00dd00>Global</color>]"));
                     total_wp++;
                 }
                 foreach (var wp in Database.waypoints)
                 {
-                    Output.SendSystemMessage(ctx, $Plugin.getTranslation(" - <color=#ffff00>{wp.Value.Name}</color>"));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation(" - <color=#ffff00>")+wp.Value.Name+ Plugin.getTranslation("</color>"));
                     total_wp++;
                 }
                 if (total_wp == 0) Output.CustomErrorMessage(ctx, Plugin.getTranslation("No waypoint available."));
@@ -156,13 +156,13 @@ namespace RPGMods.Commands
 
         public static void LoadWaypoints()
         {
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/waypoints.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/waypoints.json"))
             {
-                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/waypoints.json"));
+                var stream = File.Create("BepInEx/config/RPGMods/Saves/waypoints.json");
                 stream.Dispose();
             }
 
-            string json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/waypoints.json"));
+            string json = File.ReadAllText("BepInEx/config/RPGMods/Saves/waypoints.json");
             try
             {
                 Database.waypoints = JsonSerializer.Deserialize<Dictionary<string, WaypointData>>(json);
@@ -174,13 +174,13 @@ namespace RPGMods.Commands
                 Plugin.Logger.LogWarning(Plugin.getTranslation("Waypoints DB Created"));
             }
 
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/global_waypoints.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/global_waypoints.json"))
             {
-                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/global_waypoints.json"));
+                var stream = File.Create("BepInEx/config/RPGMods/Saves/global_waypoints.json");
                 stream.Dispose();
             }
 
-            json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/global_waypoints.json"));
+            json = File.ReadAllText("BepInEx/config/RPGMods/Saves/global_waypoints.json");
             try
             {
                 Database.globalWaypoint = JsonSerializer.Deserialize<Dictionary<string, WaypointData>>(json);
@@ -192,13 +192,13 @@ namespace RPGMods.Commands
                 Plugin.Logger.LogWarning(Plugin.getTranslation("GlobalWaypoints DB Created"));
             }
 
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/total_waypoints.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/total_waypoints.json"))
             {
-                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/total_waypoints.json"));
+                var stream = File.Create("BepInEx/config/RPGMods/Saves/total_waypoints.json");
                 stream.Dispose();
             }
 
-            json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/total_waypoints.json"));
+            json = File.ReadAllText("BepInEx/config/RPGMods/Saves/total_waypoints.json");
             try
             {
                 Database.waypoints_owned = JsonSerializer.Deserialize<Dictionary<ulong, int>>(json);
@@ -213,9 +213,9 @@ namespace RPGMods.Commands
 
         public static void SaveWaypoints()
         {
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/waypoints.json"), JsonSerializer.Serialize(Database.waypoints, Database.JSON_options));
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/global_waypoints.json"), JsonSerializer.Serialize(Database.globalWaypoint, Database.JSON_options));
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/total_waypoints.json"), JsonSerializer.Serialize(Database.waypoints_owned, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/waypoints.json", JsonSerializer.Serialize(Database.waypoints, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/global_waypoints.json", JsonSerializer.Serialize(Database.globalWaypoint, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/total_waypoints.json", JsonSerializer.Serialize(Database.waypoints_owned, Database.JSON_options));
         }
     }
 }

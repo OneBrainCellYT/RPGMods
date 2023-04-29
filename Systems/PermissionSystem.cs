@@ -82,18 +82,18 @@ namespace RPGMods.Systems
             var SortedPermission = Database.user_permission.ToList();
             SortedPermission.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
             var ListPermission = SortedPermission;
-            messages.Add($Plugin.getTranslation("==================================="));
-            if (ListPermission.Count == 0) messages.Add($Plugin.getTranslation("<color=#fffffffe>No Result</color>"));
+            messages.Add(Plugin.getTranslation("==================================="));
+            if (ListPermission.Count == 0) messages.Add(Plugin.getTranslation("<color=#fffffffe>No Result</color>"));
             else
             {
                 int i = 0;
                 foreach (var result in ListPermission)
                 {
                     i++;
-                    messages.Add($Plugin.getTranslation("{i}. <color=#fffffffe>{Helper.GetNameFromSteamID(result.Key)} : {result.Value}</color>"));
+                    messages.Add(Plugin.getTranslation("{i}. <color=#fffffffe>")+Helper.GetNameFromSteamID(result.Key) + Plugin.getTranslation(" : ")+result.Value + Plugin.getTranslation("</color>"));
                 }
             }
-            messages.Add($Plugin.getTranslation("==================================="));
+            messages.Add(Plugin.getTranslation("==================================="));
 
             TaskRunner.Start(taskWorld => SendPermissionList(ctx, messages), false);
         }
@@ -223,22 +223,22 @@ namespace RPGMods.Systems
 
         public static void SavePermissions()
         {
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/command_permission.json"), JsonSerializer.Serialize(Database.command_permission, Database.Pretty_JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/command_permission.json", JsonSerializer.Serialize(Database.command_permission, Database.Pretty_JSON_options));
         }
 
         public static void SaveUserPermission()
         {
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/user_permission.json"), JsonSerializer.Serialize(Database.user_permission, Database.Pretty_JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/user_permission.json", JsonSerializer.Serialize(Database.user_permission, Database.Pretty_JSON_options));
         }
 
         public static void LoadPermissions()
         {
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/user_permission.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/user_permission.json"))
             {
-                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/user_permission.json"));
+                FileStream stream = File.Create("BepInEx/config/RPGMods/user_permission.json");
                 stream.Dispose();
             }
-            string json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/user_permission.json"));
+            string json = File.ReadAllText("BepInEx/config/RPGMods/user_permission.json");
             try
             {
                 Database.user_permission = JsonSerializer.Deserialize<Dictionary<ulong, int>>(json);
@@ -250,12 +250,12 @@ namespace RPGMods.Systems
                 Plugin.Logger.LogWarning(Plugin.getTranslation("UserPermission DB Created."));
             }
 
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/command_permission.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/command_permission.json"))
             {
-                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/command_permission.json"));
+                FileStream stream = File.Create("BepInEx/config/RPGMods/command_permission.json");
                 stream.Dispose();
             }
-            json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/command_permission.json"));
+            json = File.ReadAllText("BepInEx/config/RPGMods/command_permission.json");
             try
             {
                 Database.command_permission = JsonSerializer.Deserialize<Dictionary<string, int>>(json);

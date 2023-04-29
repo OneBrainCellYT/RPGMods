@@ -11,7 +11,7 @@ namespace RPGMods.Hooks {
 [HarmonyPatch]
 public class DeathEventListenerSystem_Patch
 {
-    [HarmonyPatch(typeof(DeathEventListenerSystem), Plugin.getTranslation("OnUpdate"))]
+    [HarmonyPatch(typeof(DeathEventListenerSystem), ("OnUpdate"))]
     [HarmonyPostfix]
     public static void Postfix(DeathEventListenerSystem __instance)
     {

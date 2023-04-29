@@ -4,7 +4,7 @@
     {
         private static string ColorText(string color, string text)
         {
-            return $Plugin.getTranslation("<color={color}>") + text + Plugin.getTranslation("</color>");
+            return Plugin.getTranslation("<color=")+color + Plugin.getTranslation(">") + text + Plugin.getTranslation("</color>");
         }
 
         public static string White(string text)

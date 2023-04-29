@@ -6,7 +6,7 @@ using Unity.Entities;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("nocooldown, nocd"), Usage = Plugin.getTranslation("nocooldown"), Description = Plugin.getTranslation("Toggles instant cooldown for all abilities."))]
+    [Command(("nocooldown, nocd"), Usage = ("nocooldown"), Description = ("Toggles instant cooldown for all abilities."))]
     public static class NoCooldown
     {
         public static void Initialize(Context ctx)
@@ -18,7 +18,7 @@ namespace RPGMods.Commands
             else isNoCD = true;
             UpdateCooldownList(ctx, isNoCD);
             string p = isNoCD ? Plugin.getTranslation("Activated") : Plugin.getTranslation("Deactivated");
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("No Cooldown is now <color=#ffff00>{p}</color>"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("No Cooldown is now <color=#ffff00>")+p+ Plugin.getTranslation("</color>"));
             Helper.ApplyBuff(ctx.Event.SenderUserEntity, ctx.Event.SenderCharacterEntity, Database.Buff.Buff_VBlood_Perk_Moose);
         }
 
@@ -33,7 +33,7 @@ namespace RPGMods.Commands
 
         public static void SaveCooldown()
         {
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/nocooldown.json"), JsonSerializer.Serialize(Database.nocooldownlist, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/nocooldown.json", JsonSerializer.Serialize(Database.nocooldownlist, Database.JSON_options));
         }
 
         public static bool RemoveCooldown(Context ctx)
@@ -49,12 +49,12 @@ namespace RPGMods.Commands
 
         public static void LoadNoCooldown()
         {
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/nocooldown.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/nocooldown.json"))
             {
-                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/nocooldown.json"));
+                var stream = File.Create("BepInEx/config/RPGMods/Saves/nocooldown.json");
                 stream.Dispose();
             }
-            string json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/nocooldown.json"));
+            string json = File.ReadAllText("BepInEx/config/RPGMods/Saves/nocooldown.json");
             try
             {
                 Database.nocooldownlist = JsonSerializer.Deserialize<Dictionary<ulong, bool>>(json);

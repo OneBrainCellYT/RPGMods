@@ -127,7 +127,7 @@ namespace RPGMods.Systems
             {
                 if (isLogging)
                 {
-                    Output.SendLore(userEntity, $Plugin.getTranslation("<color=#ffdd00>You gain {EXPGained} experience points by slaying a Lv.{UnitLevel.Level} enemy.</color>"));
+                    Output.SendLore(userEntity, Plugin.getTranslation("<color=#ffdd00>You gain ")+EXPGained + Plugin.getTranslation(" experience points by slaying a Lv.")+UnitLevel.Level + Plugin.getTranslation(" enemy.</color>"));
                 }
             }
         }
@@ -162,7 +162,7 @@ namespace RPGMods.Systems
             Database.player_experience[SteamID] = exp - EXPLost;
 
             SetLevel(playerEntity, userEntity, SteamID);
-            Output.SendLore(userEntity, $Plugin.getTranslation("You've been defeated,<color=#fffffffe> {EXPLostOnDeath * 100}%</color> experience is lost."));
+            Output.SendLore(userEntity, Plugin.getTranslation("You've been defeated,<color=#fffffffe> ")+EXPLostOnDeath * 100 + Plugin.getTranslation("%</color> experience is lost."));
         }
 
         public static void BuffReceiver(Entity buffEntity)
@@ -202,7 +202,7 @@ namespace RPGMods.Systems
                         if (isLogging) 
                         {
                             var userData = entityManager.GetComponentData<User>(user);
-                            Output.SendLore(user, $Plugin.getTranslation("<color=#ffdd00>Level up! You're now level</color><color=#fffffffe> {level}</color><color=#ffdd00ff>!</color>"));
+                            Output.SendLore(user, Plugin.getTranslation("<color=#ffdd00>Level up! You're now level</color><color=#fffffffe> ")+level + Plugin.getTranslation("</color><color=#ffdd00ff>!</color>"));
                         }
                     }
                     
@@ -256,18 +256,18 @@ namespace RPGMods.Systems
 
         public static void SaveEXPData()
         {
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_experience.json"), JsonSerializer.Serialize(Database.player_experience, Database.JSON_options));
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_log_exp.json"), JsonSerializer.Serialize(Database.player_log_exp, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/player_experience.json", JsonSerializer.Serialize(Database.player_experience, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/player_log_exp.json", JsonSerializer.Serialize(Database.player_log_exp, Database.JSON_options));
         }
 
         public static void LoadEXPData()
         {
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_experience.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/player_experience.json"))
             {
-                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_experience.json"));
+                FileStream stream = File.Create("BepInEx/config/RPGMods/Saves/player_experience.json");
                 stream.Dispose();
             }
-            string json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_experience.json"));
+            string json = File.ReadAllText("BepInEx/config/RPGMods/Saves/player_experience.json");
             try
             {
                 Database.player_experience = JsonSerializer.Deserialize<Dictionary<ulong, int>>(json);
@@ -279,12 +279,12 @@ namespace RPGMods.Systems
                 Plugin.Logger.LogWarning(Plugin.getTranslation("PlayerEXP DB Created."));
             }
 
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_log_exp.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/player_log_exp.json"))
             {
-                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_log_exp.json"));
+                FileStream stream = File.Create("BepInEx/config/RPGMods/Saves/player_log_exp.json");
                 stream.Dispose();
             }
-            json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_log_exp.json"));
+            json = File.ReadAllText("BepInEx/config/RPGMods/Saves/player_log_exp.json");
             try
             {
                 Database.player_log_exp = JsonSerializer.Deserialize<Dictionary<ulong, bool>>(json);

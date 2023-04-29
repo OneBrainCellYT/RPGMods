@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("speed"), Usage = Plugin.getTranslation("speed"), Description = Plugin.getTranslation("Toggles increased movement speed."))]
+    [Command(("speed"), Usage = ("speed"), Description = ("Toggles increased movement speed."))]
 
     public static class Speed
     {
@@ -17,7 +17,7 @@ namespace RPGMods.Commands
             else isSpeeding = true;
             UpdateSpeed(ctx, isSpeeding);
             string s = isSpeeding ? Plugin.getTranslation("Activated") : Plugin.getTranslation("Deactivated");
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Speed buff <color=#ffff00>{s}</color>"));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("Speed buff <color=#ffff00>")+s+ Plugin.getTranslation("</color>"));
             Helper.ApplyBuff(ctx.Event.SenderUserEntity, ctx.Event.SenderCharacterEntity, Database.Buff.Buff_VBlood_Perk_Moose);
         }
 
@@ -32,7 +32,7 @@ namespace RPGMods.Commands
 
         public static void SaveSpeed()
         {
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/speeding.json"), JsonSerializer.Serialize(Database.speeding, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/speeding.json", JsonSerializer.Serialize(Database.speeding, Database.JSON_options));
         }
 
         public static bool RemoveSpeed(Context ctx)
@@ -48,12 +48,12 @@ namespace RPGMods.Commands
 
         public static void LoadSpeed()
         {
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/speeding.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/speeding.json"))
             {
-                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/speeding.json"));
+                var stream = File.Create("BepInEx/config/RPGMods/Saves/speeding.json");
                 stream.Dispose();
             }
-            string json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/speeding.json"));
+            string json = File.ReadAllText("BepInEx/config/RPGMods/Saves/speeding.json");
             try
             {
                 Database.speeding = JsonSerializer.Deserialize<Dictionary<ulong, bool>>(json);

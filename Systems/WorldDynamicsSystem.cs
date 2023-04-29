@@ -164,22 +164,22 @@ namespace RPGMods.Systems
 
         public static void SaveFactionStats()
         {
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/factionstats.json"), JsonSerializer.Serialize(Database.FactionStats, Database.Pretty_JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/factionstats.json", JsonSerializer.Serialize(Database.FactionStats, Database.Pretty_JSON_options));
         }
 
         public static void SaveIgnoredMobs()
         {
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/ignoredmonsters.json"), JsonSerializer.Serialize(Database.IgnoredMonsters, Database.Pretty_JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/ignoredmonsters.json", JsonSerializer.Serialize(Database.IgnoredMonsters, Database.Pretty_JSON_options));
         }
 
         public static void LoadIgnoredMobs()
         {
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/ignoredmonsters.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/ignoredmonsters.json"))
             {
-                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/ignoredmonsters.json"));
+                var stream = File.Create("BepInEx/config/RPGMods/Saves/ignoredmonsters.json");
                 stream.Dispose();
             }
-            string content = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/ignoredmonsters.json"));
+            string content = File.ReadAllText("BepInEx/config/RPGMods/Saves/ignoredmonsters.json");
             try
             {
                 Database.IgnoredMonsters = JsonSerializer.Deserialize<HashSet<string>>(content);
@@ -209,12 +209,12 @@ namespace RPGMods.Systems
 
         public static void LoadFactionStats()
         {
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/factionstats.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/factionstats.json"))
             {
-                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/factionstats.json"));
+                var stream = File.Create("BepInEx/config/RPGMods/Saves/factionstats.json");
                 stream.Dispose();
             }
-            string content = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/factionstats.json"));
+            string content = File.ReadAllText("BepInEx/config/RPGMods/Saves/factionstats.json");
             try
             {
                 Database.FactionStats = JsonSerializer.Deserialize<ConcurrentDictionary<int, FactionData>>(content);

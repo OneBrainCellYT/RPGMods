@@ -26,7 +26,7 @@ namespace RPGMods
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 
 #if WETSTONE
-    [BepInDependency(Plugin.getTranslation("xyz.molenzwiebel.wetstone"))]
+    [BepInDependency(("xyz.molenzwiebel.wetstone"))]
     [Reloadable]
     public class Plugin : BasePlugin, IRunOnInitialized
 #else
@@ -330,9 +330,9 @@ namespace RPGMods
             if (!Directory.Exists(Plugin.getTranslation("BepInEx/config/RPGMods"))) Directory.CreateDirectory(Plugin.getTranslation("BepInEx/config/RPGMods"));
             if (!Directory.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves"))) Directory.CreateDirectory(Plugin.getTranslation("BepInEx/config/RPGMods/Saves"));
 
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/kits.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/kits.json"))
             {
-                var stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/kits.json"));
+                var stream = File.Create("BepInEx/config/RPGMods/kits.json");
                 stream.Dispose();
             }
         }
@@ -350,8 +350,8 @@ namespace RPGMods
         }
         public static void loadLocalization() {
             if (!Directory.Exists(Plugin.getTranslation("BepInEx/config/RPGMods"))) Directory.CreateDirectory(Plugin.getTranslation("BepInEx/config/RPGMods"));
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Language.json"))) {
-                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Language.json"));
+            if (!File.Exists("BepInEx/config/RPGMods/Language.json")) {
+                FileStream stream = File.Create("BepInEx/config/RPGMods/Language.json");
                 stream.Dispose();
             }
 
@@ -367,7 +367,7 @@ namespace RPGMods
         }
         public static void saveLocalization() {
 
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Language.json"), JsonSerializer.Serialize(Plugin.localizationData, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Language.json", JsonSerializer.Serialize(Plugin.localizationData, Database.JSON_options));
         }
 
         public override bool Unload()

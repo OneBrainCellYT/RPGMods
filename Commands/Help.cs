@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("help, h"), Usage = Plugin.getTranslation("help [<command>]"), Description = Plugin.getTranslation("Shows a list of commands, or details about a command."), ReqPermission = 0)]
+    [Command(("help, h"), Usage = ("help [<command>]"), Description = ("Shows a list of commands, or details about a command."), ReqPermission = 0)]
     public static class Help
     {
         public static void Initialize(Context ctx)
@@ -22,7 +22,7 @@ namespace RPGMods.Commands
                     List<string> aliases = type.GetAttributeValue((CommandAttribute cmd) => cmd.Aliases);
                     if (CommandHandler.DisabledCommands.Split(',').Any(x => x.ToLower() == aliases.First().ToLower()))
                     {
-                        Output.SendSystemMessage(ctx, $Plugin.getTranslation("Specified command not found."));
+                        Output.SendSystemMessage(ctx, Plugin.getTranslation("Specified command not found."));
                         return;
                     }
                     string usage = type.GetAttributeValue((CommandAttribute cmd) => cmd.Usage);
@@ -32,18 +32,18 @@ namespace RPGMods.Commands
 
                     if (userPermission < reqPermission && !ctx.Event.User.IsAdmin)
                     {
-                        Output.SendSystemMessage(ctx, $Plugin.getTranslation("Specified command not found."));
+                        Output.SendSystemMessage(ctx, Plugin.getTranslation("Specified command not found."));
                         return;
                     }
-                    Output.SendSystemMessage(ctx, $Plugin.getTranslation("Help for <color=#00ff00>{ctx.Prefix}{aliases.First()}</color>"));
-                    Output.SendSystemMessage(ctx, $Plugin.getTranslation("<color=#fffffffe>Aliases: {string.Join("), Plugin.getTranslation(", aliases)}</color>"));
-                    Output.SendSystemMessage(ctx, $Plugin.getTranslation("<color=#fffffffe>Description: {description}</color>"));
-                    Output.SendSystemMessage(ctx, $Plugin.getTranslation("<color=#fffffffe>Usage: {ctx.Prefix}{usage}</color>"));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("Help for <color=#00ff00>")+ctx.Prefix+aliases.First() + Plugin.getTranslation("</color>"));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("<color=#fffffffe>Aliases: ")+string.Join(Plugin.getTranslation("), ("), aliases) + Plugin.getTranslation("</color>"));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("<color=#fffffffe>Description: ")+description + Plugin.getTranslation("</color>"));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("<color=#fffffffe>Usage: ")+ctx.Prefix+usage + Plugin.getTranslation("</color>"));
                     return;
                 }
                 else
                 {
-                    Output.SendSystemMessage(ctx, $Plugin.getTranslation("Specified command not found."));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("Specified command not found."));
                     return;
                 }
             }
@@ -62,13 +62,13 @@ namespace RPGMods.Commands
                     bool send = false;
                     if (userPermission < reqPermission && ctx.Event.User.IsAdmin)
                     {
-                        s = $Plugin.getTranslation("<color=#00ff00>{ctx.Prefix}{string.Join("), Plugin.getTranslation(", aliases)}</color> - <color=#ff0000>[{reqPermission}]</color> <color=#fffffffe>{description}</color>");
+                        s = Plugin.getTranslation("<color=#00ff00>")+ctx.Prefix+string.Join(Plugin.getTranslation("), ("), aliases)+ Plugin.getTranslation("</color> - <color=#ff0000>[")+reqPermission+ Plugin.getTranslation("]</color> <color=#fffffffe>{description}</color>");
                         //s = $Plugin.getTranslation("<color=#00ff00ff>{ctx.Prefix}{aliases.First()}/{string.Join("), Plugin.getTranslation(", aliases)}</color> - <color=#ff0000ff>[ADMIN]</color> <color=#ffffffff>{description}</color>");
                         send = true;
                     }
                     else if (userPermission >= reqPermission)
                     {
-                        s = $Plugin.getTranslation("<color=#00ff00>{ctx.Prefix}{string.Join("), Plugin.getTranslation(", aliases)}</color> - <color=#fffffffe>{description}</color>");
+                        s = Plugin.getTranslation("<color=#00ff00>")+ctx.Prefix+string.Join(Plugin.getTranslation("), ("), aliases) + Plugin.getTranslation("</color> - <color=#fffffffe>")+description + Plugin.getTranslation("</color>");
                         //s = $Plugin.getTranslation("<color=#00ff00ff>{ctx.Prefix}{aliases.First()}/{string.Join("), Plugin.getTranslation(", aliases)}</color> - <color=#ffffffff>{description}</color>");
                         send = true;
                     }

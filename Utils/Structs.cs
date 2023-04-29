@@ -145,7 +145,7 @@ namespace RPGMods.Utils
         public string Title { get; set; }
         public int HonorRank { get; set; }
         public int Rewards { get; set; }
-        public HonorRankInfo( string title = Plugin.getTranslation("default"), int honorRank = 0, int rewards = 0)
+        public HonorRankInfo( string title = ("default"), int honorRank = 0, int rewards = 0)
         {
             Title = title;
             HonorRank = honorRank;
@@ -161,7 +161,7 @@ namespace RPGMods.Utils
         public double KD { get; set; }
         public int Reputation { get; set; }
         public string Title { get; set; }
-        public PvPData(string playerName = Plugin.getTranslation("default"), int kills = 0, int deaths = 0, float kd = 0f, int reputation = 0, string title = Plugin.getTranslation("default"))
+        public PvPData(string playerName = ("default"), int kills = 0, int deaths = 0, float kd = 0f, int reputation = 0, string title = ("default"))
         {
             PlayerName = playerName;
             Kills = kills;
@@ -260,7 +260,7 @@ namespace RPGMods.Utils
         public string BannedBy { get; set; }
         public ulong SteamID { get; set; }
 
-        public BanData(DateTime banUntil = default(DateTime), string reason = Plugin.getTranslation("Invalid"), string bannedBy = Plugin.getTranslation("Default"), ulong steamID = 0)
+        public BanData(DateTime banUntil = default(DateTime), string reason = ("Invalid"), string bannedBy = ("Default"), ulong steamID = 0)
         {
             BanUntil = banUntil;
             Reason = reason;

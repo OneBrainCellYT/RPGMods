@@ -5,7 +5,7 @@ using Unity.Entities;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("experience, exp, xp"), Usage = Plugin.getTranslation("experience [<log> <on>|<off>]"), Description = Plugin.getTranslation("Shows your currect experience and progression to next level, or toggle the exp gain notification."))]
+    [Command(("experience, exp, xp"), Usage = ("experience [<log> <on>|<off>]"), Description = ("Shows your currect experience and progression to next level, or toggle the exp gain notification."))]
     public static class Experience
     {
         private static EntityManager entityManager = Plugin.Server.EntityManager;

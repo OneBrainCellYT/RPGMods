@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("save"), Usage = Plugin.getTranslation("save [<name>]"), Description = Plugin.getTranslation("Force the server to write RPGMods DB to a json file."))]
+    [Command(("save"), Usage = ("save [<name>]"), Description = ("Force the server to write RPGMods DB to a json file."))]
     public static class Save
     {
         public static void Initialize(Context ctx)
@@ -26,10 +26,10 @@ namespace RPGMods.Commands
                 }
             }
 
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Saving data...."));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("Saving data...."));
             AutoSaveSystem.SaveDatabase();
             //Plugin.Server.GetExistingSystem<TriggerPersistenceSaveSystem>().TriggerSave(SaveReason.ManualSave, name);
-            Output.SendSystemMessage(ctx, $Plugin.getTranslation("Data save complete."));
+            Output.SendSystemMessage(ctx, Plugin.getTranslation("Data save complete."));
         }
     }
 }

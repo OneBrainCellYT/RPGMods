@@ -25,7 +25,7 @@ namespace RPGMods.Utils
         public static ServerGameManager SGM = default;
         public static UserActivityGridSystem UAGS = default;
 
-        public static Regex rxName = new Regex(@Plugin.getTranslation("(?<=\])[^\[].*"));
+        public static Regex rxName = new Regex(@"(?<=\])[^\[].*");
 
 
         public static bool GetUserActivityGridSystem(out UserActivityGridSystem uags)

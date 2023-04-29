@@ -8,7 +8,7 @@ using Unity.Entities;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("autorespawn"), Usage = Plugin.getTranslation("autorespawn [<PlayerName>]"), Description = Plugin.getTranslation("Toggle auto respawn on the same position on death."))]
+    [Command(("autorespawn"), Usage = ("autorespawn [<PlayerName>]"), Description = ("Toggle auto respawn on the same position on death."))]
     public static class AutoRespawn
     {
         public static void Initialize(Context ctx)

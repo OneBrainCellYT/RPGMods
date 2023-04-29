@@ -12,37 +12,37 @@ namespace RPGMods.Utils
     {
         public static void CustomErrorMessage(Context ctx, string message)
         {
-            ServerChatUtils.SendSystemMessageToClient(ctx.EntityManager, ctx.Event.User, $Plugin.getTranslation("<color=#ff0000>{message}</color>"));
+            ServerChatUtils.SendSystemMessageToClient(ctx.EntityManager, ctx.Event.User, Plugin.getTranslation("<color=#ff0000>")+message + Plugin.getTranslation("</color>"));
         }
 
         public static void CustomErrorMessage(VChatEvent ev, string message)
         {
-            ServerChatUtils.SendSystemMessageToClient(Plugin.Server.EntityManager, ev.User, $Plugin.getTranslation("<color=#ff0000>{message}</color>"));
+            ServerChatUtils.SendSystemMessageToClient(Plugin.Server.EntityManager, ev.User, Plugin.getTranslation("<color=#ff0000>")+message + Plugin.getTranslation("</color>"));
         }
 
         public static void SendSystemMessage(Context ctx, string message)
         {
-            ServerChatUtils.SendSystemMessageToClient(ctx.EntityManager, ctx.Event.User, $Plugin.getTranslation("{message}"));
+            ServerChatUtils.SendSystemMessageToClient(ctx.EntityManager, ctx.Event.User, message);
         }
 
         public static void SendSystemMessage(VChatEvent ev, string message)
         {
-            ServerChatUtils.SendSystemMessageToClient(Plugin.Server.EntityManager, ev.User, $Plugin.getTranslation("{message}"));
+            ServerChatUtils.SendSystemMessageToClient(Plugin.Server.EntityManager, ev.User, message);
         }
 
         public static void InvalidCommand(VChatEvent ev)
         {
-            ServerChatUtils.SendSystemMessageToClient(Plugin.Server.EntityManager, ev.User, $Plugin.getTranslation("<color=#ff0000>Invalid command.</color>"));
+            ServerChatUtils.SendSystemMessageToClient(Plugin.Server.EntityManager, ev.User, Plugin.getTranslation("<color=#ff0000>Invalid command.</color>"));
         }
 
         public static void InvalidArguments(Context ctx)
         {
-            ServerChatUtils.SendSystemMessageToClient(ctx.EntityManager, ctx.Event.User, $Plugin.getTranslation("<color=#ff0000>Invalid command parameters. Check {ctx.Prefix}help [<command>] for more information.</color>"));
+            ServerChatUtils.SendSystemMessageToClient(ctx.EntityManager, ctx.Event.User, Plugin.getTranslation("<color=#ff0000>Invalid command parameters. Check ")+ctx.Prefix + Plugin.getTranslation("help [<command>] for more information.</color>"));
         }
 
         public static void MissingArguments(Context ctx)
         {
-            ServerChatUtils.SendSystemMessageToClient(ctx.EntityManager, ctx.Event.User, $Plugin.getTranslation("<color=#ff0000>Missing command parameters. Check {ctx.Prefix}help [<command>] for more information.</color>"));
+            ServerChatUtils.SendSystemMessageToClient(ctx.EntityManager, ctx.Event.User, Plugin.getTranslation("<color=#ff0000>Missing command parameters. Check ")+ctx.Prefix + Plugin.getTranslation("help [<command>] for more information.</color>"));
         }
 
         public static void SendLore(Entity userEntity, string message)

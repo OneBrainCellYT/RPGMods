@@ -143,7 +143,7 @@ namespace RPGMods.Systems
             {
                 if (isLogging)
                 {
-                    Output.SendLore(userEntity, $Plugin.getTranslation("<color=#ffb700>Weapon mastery has increased by {MasteryValue * 0.001}%</color>"));
+                    Output.SendLore(userEntity, Plugin.getTranslation("<color=#ffb700>Weapon mastery has increased by ")+MasteryValue * 0.001 + Plugin.getTranslation("%</color>"));
                 }
             }
         }
@@ -206,7 +206,7 @@ namespace RPGMods.Systems
                 {
                     int DecayValue = Offline_DecayValue * DecayTicks *-1;
 
-                    Output.SendLore(userEntity, $Plugin.getTranslation("You've been sleeping for {(int)elapsed_time.TotalMinutes} minute(s). Your mastery has decayed by {DecayValue * 0.001}%"));
+                    Output.SendLore(userEntity, Plugin.getTranslation("You've been sleeping for ")+(int)elapsed_time.TotalMinutes + Plugin.getTranslation(" minute(s). Your mastery has decayed by ")+DecayValue * 0.001 + Plugin.getTranslation("%"));
 
                     for(int i = 0; i < masteryStats.Length; i++){
                         SetMastery(SteamID, i, DecayValue);
@@ -277,22 +277,22 @@ namespace RPGMods.Systems
             effectiveness = Math.Max(1.0f, effectiveness);
             if (type >= masteryRates.Length){
                 if (Helper.FindPlayer(SteamID, true, out var targetEntity, out var targetUserEntity))
-                    Output.SendLore(targetUserEntity, $Plugin.getTranslation("Type {type} out of bounds for masteryRates, max of {masteryRates.Length - 1}"));
+                    Output.SendLore(targetUserEntity, Plugin.getTranslation("Type ")+type+Plugin.getTranslation(" out of bounds for masteryRates, max of ")+(masteryRates.Length - 1));
                 return 0.0f;
             }
             if (stat >= masteryRates[type].Length){
                 if (Helper.FindPlayer(SteamID, true, out var targetEntity, out var targetUserEntity))
-                    Output.SendLore(targetUserEntity, $Plugin.getTranslation("stat {stat} out of bounds for masteryRates for type {type}, max of {masteryRates[type].Length - 1}"));
+                    Output.SendLore(targetUserEntity, Plugin.getTranslation("stat ")+stat + Plugin.getTranslation(" out of bounds for masteryRates for type ") +type + Plugin.getTranslation(", max of ") +(masteryRates[type].Length - 1));
                 return 0.0f;
             }
             if (type >= masteryStats.Length){
                 if (Helper.FindPlayer(SteamID, true, out var targetEntity, out var targetUserEntity))
-                    Output.SendLore(targetUserEntity, $Plugin.getTranslation("Type {type} out of bounds for masteryStats, max of {masteryStats.Length - 1}"));
+                    Output.SendLore(targetUserEntity, Plugin.getTranslation("Type ")+type + Plugin.getTranslation(" out of bounds for masteryStats, max of ")+(masteryStats.Length - 1));
                 return 0.0f;
             }
             if (stat >= masteryStats[type].Length){
                 if (Helper.FindPlayer(SteamID, true, out var targetEntity, out var targetUserEntity))
-                    Output.SendLore(targetUserEntity, $Plugin.getTranslation("stat {stat} out of bounds for masteryStats for type {type}, max of {masteryStats[type].Length - 1}"));
+                    Output.SendLore(targetUserEntity, Plugin.getTranslation("stat ")+stat + Plugin.getTranslation(" out of bounds for masteryStats for type ")+type + Plugin.getTranslation(", max of ")+(masteryStats[type].Length - 1));
                 return 0.0f;
             }
             float value = mastery * masteryRates[type][stat] * effectiveness;
@@ -354,7 +354,7 @@ namespace RPGMods.Systems
         public static void resetMastery(ulong SteamID, int type) {
             if (!effectivenessSubSystemEnabled) {
                 if (Helper.FindPlayer(SteamID, true, out var targetEntity, out var targetUserEntity)) {
-                    Output.SendLore(targetUserEntity, $Plugin.getTranslation("Effectiveness Subsystem disabled, not resetting mastery."));
+                    Output.SendLore(targetUserEntity, Plugin.getTranslation("Effectiveness Subsystem disabled, not resetting mastery."));
                 }
                 return;
             }
@@ -501,30 +501,30 @@ namespace RPGMods.Systems
 
         public static void SaveWeaponMastery()
         {
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_mastery_array.json"), JsonSerializer.Serialize(Database.player_weaponmastery, Database.JSON_options));
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/mastery_decay.json"), JsonSerializer.Serialize(Database.player_decaymastery_logout, Database.JSON_options));
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_log_mastery.json"), JsonSerializer.Serialize(Database.player_log_mastery, Database.JSON_options));
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_Mastery_Effectiveness.json"), JsonSerializer.Serialize(Database.playerWeaponEffectiveness, Database.JSON_options));
-            File.WriteAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_Mastery_Growth.json"), JsonSerializer.Serialize(Database.playerWeaponGrowth, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/weapon_mastery_array.json", JsonSerializer.Serialize(Database.player_weaponmastery, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/mastery_decay.json", JsonSerializer.Serialize(Database.player_decaymastery_logout, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/player_log_mastery.json", JsonSerializer.Serialize(Database.player_log_mastery, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/weapon_Mastery_Effectiveness.json", JsonSerializer.Serialize(Database.playerWeaponEffectiveness, Database.JSON_options));
+            File.WriteAllText("BepInEx/config/RPGMods/Saves/weapon_Mastery_Growth.json", JsonSerializer.Serialize(Database.playerWeaponGrowth, Database.JSON_options));
         }
 
         public static void LoadWeaponMastery() {
             bool update = false;
             bool updateGrowth = false;
             bool updateEfficency = false;
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_mastery_array.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/weapon_mastery_array.json"))
             {
-                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_mastery_array.json"));
-                if (File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_mastery.json"))) {
+                FileStream stream = File.Create("BepInEx/config/RPGMods/Saves/weapon_mastery_array.json");
+                if (File.Exists("BepInEx/config/RPGMods/Saves/weapon_mastery.json")) {
                     update = true;
-                    String temp = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_mastery.json"));
+                    String temp = File.ReadAllText("BepInEx/config/RPGMods/Saves/weapon_mastery.json");
                     Plugin.Logger.LogWarning(Plugin.getTranslation("WeaponMastery DB needs updating, is as follows:"));
                     Plugin.Logger.LogWarning(temp);
                     Database.player_weaponmasteryOld = JsonSerializer.Deserialize<Dictionary<ulong, WeaponMasterDataOld>>(temp);
                 }
                 stream.Dispose();
             }
-            string json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_mastery_array.json"));
+            string json = File.ReadAllText("BepInEx/config/RPGMods/Saves/weapon_mastery_array.json");
             try
             {
                 Database.player_weaponmastery = JsonSerializer.Deserialize<Dictionary<ulong, WeaponMasterData>>(json);
@@ -536,12 +536,12 @@ namespace RPGMods.Systems
                 Plugin.Logger.LogWarning(Plugin.getTranslation("WeaponMastery DB Created."));
             }
 
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/mastery_decay.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/mastery_decay.json"))
             {
-                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/mastery_decay.json"));
+                FileStream stream = File.Create("BepInEx/config/RPGMods/Saves/mastery_decay.json");
                 stream.Dispose();
             }
-            json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/mastery_decay.json"));
+            json = File.ReadAllText("BepInEx/config/RPGMods/Saves/mastery_decay.json");
             try
             {
                 Database.player_decaymastery_logout = JsonSerializer.Deserialize<Dictionary<ulong, DateTime>>(json);
@@ -553,12 +553,12 @@ namespace RPGMods.Systems
                 Plugin.Logger.LogWarning(Plugin.getTranslation("WeaponMasteryDecay DB Created."));
             }
 
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_log_mastery.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/player_log_mastery.json"))
             {
-                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_log_mastery.json"));
+                FileStream stream = File.Create("BepInEx/config/RPGMods/Saves/player_log_mastery.json");
                 stream.Dispose();
             }
-            json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/player_log_mastery.json"));
+            json = File.ReadAllText("BepInEx/config/RPGMods/Saves/player_log_mastery.json");
             try
             {
                 Database.player_log_mastery = JsonSerializer.Deserialize<Dictionary<ulong, bool>>(json);
@@ -571,12 +571,12 @@ namespace RPGMods.Systems
             }
 
 
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_Mastery_Effectiveness.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/weapon_Mastery_Effectiveness.json"))
             {
-                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_Mastery_Effectiveness.json"));
+                FileStream stream = File.Create("BepInEx/config/RPGMods/Saves/weapon_Mastery_Effectiveness.json");
                 stream.Dispose();
             }
-            json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_Mastery_Effectiveness.json"));
+            json = File.ReadAllText("BepInEx/config/RPGMods/Saves/weapon_Mastery_Effectiveness.json");
             try
             {
                 Database.playerWeaponEffectiveness = JsonSerializer.Deserialize<Dictionary<ulong, WeaponMasterEffectivenessData>>(json);
@@ -592,12 +592,12 @@ namespace RPGMods.Systems
             }
 
 
-            if (!File.Exists(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_Mastery_Growth.json")))
+            if (!File.Exists("BepInEx/config/RPGMods/Saves/weapon_Mastery_Growth.json"))
             {
-                FileStream stream = File.Create(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_Mastery_Growth.json"));
+                FileStream stream = File.Create("BepInEx/config/RPGMods/Saves/weapon_Mastery_Growth.json");
                 stream.Dispose();
             }
-            json = File.ReadAllText(Plugin.getTranslation("BepInEx/config/RPGMods/Saves/weapon_Mastery_Growth.json"));
+            json = File.ReadAllText("BepInEx/config/RPGMods/Saves/weapon_Mastery_Growth.json");
             try
             {
                 Database.playerWeaponGrowth = JsonSerializer.Deserialize<Dictionary<ulong, WeaponMasterGrowthData>>(json);

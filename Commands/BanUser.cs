@@ -6,7 +6,7 @@ using System;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("ban"), Usage = Plugin.getTranslation("ban <playername> <days> <reason>"), Description = Plugin.getTranslation("Check the status of specified player, or ban them. 0 is permanent."))]
+    [Command(("ban"), Usage = ("ban <playername> <days> <reason>"), Description = ("Check the status of specified player, or ban them. 0 is permanent."))]
     public static class BanUser
     {
         public static void Initialize(Context ctx)

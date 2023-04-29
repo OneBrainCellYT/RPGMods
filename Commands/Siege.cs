@@ -8,7 +8,7 @@ using Unity.Entities;
 
 namespace RPGMods.Commands
 {
-    [Command(Plugin.getTranslation("siege"), Usage = Plugin.getTranslation("siege [<on>|<off>]"), Description = Plugin.getTranslation("Display all players currently in siege mode, or engage siege mode."))]
+    [Command(("siege"), Usage = ("siege [<on>|<off>]"), Description = ("Display all players currently in siege mode, or engage siege mode."))]
     public static class Siege
     {
         private static Dictionary<ulong, DateTime> SiegeConfirm = new();
@@ -35,16 +35,16 @@ namespace RPGMods.Commands
                 {
                     if (PvPStats.Reputation <= -20000)
                     {
-                        Output.CustomErrorMessage(ctx, $Plugin.getTranslation("You're [{PvPSystem.GetHonorTitle(PvPStats.Reputation).Title}], siege mode is enforced."));
+                        Output.CustomErrorMessage(ctx, Plugin.getTranslation("You're [")+PvPSystem.GetHonorTitle(PvPStats.Reputation).Title+Plugin.getTranslation("], siege mode is enforced."));
                     }
                     TimeSpan TimeLeft = siegeState.SiegeEndTime - DateTime.Now;
                     double tLeft = Math.Round(TimeLeft.TotalHours, 2);
 
-                    Output.SendSystemMessage(ctx, $Plugin.getTranslation("Siege mode will end in {Color.White(tLeft.ToString())} hour(s)"));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("Siege mode will end in ")+Color.White(tLeft.ToString())+Plugin.getTranslation(" hour(s)"));
                 }
                 else
                 {
-                    Output.SendSystemMessage(ctx, $Plugin.getTranslation("You're currently in defensive mode."));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("You're currently in defensive mode."));
                 }
 
                 _ = PvPSystem.SiegeList(ctx);
@@ -78,7 +78,7 @@ namespace RPGMods.Commands
                     TimeSpan TimeLeft = DateTime.Now.AddMinutes(PvPSystem.SiegeDuration) - DateTime.Now;
                     double calcHours = Math.Round(TimeLeft.TotalHours, 2);
                     Output.SendSystemMessage(ctx, Plugin.getTranslation("You and your allies will not be able to exit siege mode for (") + calcHours + Plugin.getTranslation(") hours once you start."));
-                    Output.SendSystemMessage(ctx, Plugin.getTranslation("Type \")Plugin.getTranslation(" + CommandHandler.Prefix + ")siege on\Plugin.getTranslation(" again to confirm."));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("Type \"")+CommandHandler.Prefix + Plugin.getTranslation(" siege on\" again to confirm."));
                     SiegeConfirm.Add(SteamID, DateTime.Now);
                     return;
                 }
@@ -110,7 +110,7 @@ namespace RPGMods.Commands
 
                 if (PvPStats.Reputation <= -20000)
                 {
-                    Output.CustomErrorMessage(ctx, $Plugin.getTranslation("You or your allies are [{PvPSystem.GetHonorTitle(PvPStats.Reputation).Title}], siege mode is enforced."));
+                    Output.CustomErrorMessage(ctx, Plugin.getTranslation("You or your allies are [")+PvPSystem.GetHonorTitle(PvPStats.Reputation).Title+ Plugin.getTranslation("], siege mode is enforced."));
                     return;
                 }
                 TimeSpan TimeLeft = siegeState.SiegeEndTime - DateTime.Now;
@@ -124,7 +124,7 @@ namespace RPGMods.Commands
                 else
                 {
                     double tLeft = Math.Round(TimeLeft.TotalHours, 2);
-                    Output.SendSystemMessage(ctx, $Plugin.getTranslation("Siege mode cannot be ended until {Color.White(tLeft.ToString())} more hour(s)"));
+                    Output.SendSystemMessage(ctx, Plugin.getTranslation("Siege mode cannot be ended until ")+Color.White(tLeft.ToString()) + Plugin.getTranslation("more hour(s)"));
                     return;
                 }
             }
