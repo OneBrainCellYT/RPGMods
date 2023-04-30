@@ -346,6 +346,9 @@ namespace RPGMods.Systems
                 if (Value < 0) Value = 0;
                 Mastery.data[Type] += Value;
             }
+            if(Mastery.data[Type] < 0) {
+                Mastery.data[Type] = 0;
+            }
             Database.player_weaponmastery[SteamID] = Mastery;
             return;
         }
