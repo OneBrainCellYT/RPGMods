@@ -312,9 +312,9 @@ namespace RPGMods
             EnableLevelRewards = Config.Bind("Experience", "Enable Level Rewards", false, "Enable rewards per level.");
             EasyLevel15 = Config.Bind("Experience", "Easy lvl 15", true, "Makes level 15 much easier to reach so players dont get held up by the quest on it.");
 
-            MaxLevel = Config.Bind("Experience", "Max Level", 80, "Configure the experience system max level.");
+            MaxLevel = Config.Bind("Experience", "Max Level", 999, "Configure the experience system max level.");
             EXPMultiplier = Config.Bind("Experience", "Multiplier", 1.0f, "Multiply the EXP gained by player.\n" +
-                "Ex.: 0.7f -> Will reduce the EXP gained by 30%\nFormula: UnitKilledLevel * EXPMultiplier");
+                "Ex.: 0.7f -> Will reduce the EXP gained by 1%\nFormula: UnitKilledLevel * EXPMultiplier");
             VBloodEXPMultiplier = Config.Bind("Experience", "VBlood Multiplier", 15f, "Multiply EXP gained from VBlood kills.\n" +
                 "Formula: EXPGained * VBloodMultiplier * EXPMultiplier");
             //EXPLostOnDeath = Config.Bind("Experience", "EXP Lost / Death", 0.10, "Percentage of experience the player lost for every death by NPC, no EXP is lost for PvP.\nFormula: TotalPlayerEXP - (EXPNeeded * EXPLost)");
